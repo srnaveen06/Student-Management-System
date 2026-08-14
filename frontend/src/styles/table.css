@@ -1,0 +1,203 @@
+/* ============================================
+   Table Styles
+   ============================================ */
+.table-container {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: var(--bg-primary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: var(--transition);
+}
+
+.data-table tbody tr:hover {
+  background: var(--primary-bg);
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: rgba(248, 250, 252, 0.5);
+}
+
+[data-theme="dark"] .data-table tbody tr:nth-child(even) {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.data-table tbody tr:nth-child(even):hover {
+  background: var(--primary-bg);
+}
+
+/* Student Row Styles */
+.student-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.student-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  background: var(--primary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.student-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.student-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.student-id {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+/* Action Buttons in Table */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+}
+
+.action-btn.view {
+  background: var(--info-light);
+  color: var(--info);
+}
+
+.action-btn.view:hover {
+  background: var(--info);
+  color: white;
+}
+
+.action-btn.edit {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.action-btn.edit:hover {
+  background: var(--warning);
+  color: white;
+}
+
+.action-btn.delete {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.action-btn.delete:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Table Footer */
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.table-info {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.table-actions .btn {
+  font-size: var(--font-size-xs);
+  padding: 6px 12px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+  opacity: 0.3;
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  font-size: var(--font-size-base);
+  color: var(--text-muted);
+}
