@@ -1,0 +1,706 @@
+/* ============================================
+   College Management — Feature Styles
+   Covers dashboard extras, profile, fees, exams,
+   marksheet, import, notifications, activity logs
+   ============================================ */
+
+/* ---------- Utility text helpers ---------- */
+.text-muted { color: var(--text-muted); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.muted-center {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-base);
+  padding: var(--space-lg) 0;
+}
+
+/* ---------- Badge variants ---------- */
+.badge-warning { background: var(--warning-light); color: var(--warning); }
+.badge-info { background: var(--info-light); color: var(--info); }
+
+/* ---------- Extra stat icon colors ---------- */
+.stat-icon.purple { background: #F3E8FF; color: #9333EA; }
+.stat-icon.orange { background: #FFF7ED; color: #EA580C; }
+[data-theme="dark"] .stat-icon.purple { background: rgba(147, 51, 234, 0.2); color: #C084FC; }
+[data-theme="dark"] .stat-icon.orange { background: rgba(234, 88, 12, 0.2); color: #FB923C; }
+
+/* ---------- Page header actions ---------- */
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ---------- Inline stat card (Fees / Import / Logs) ---------- */
+.stat-inline-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: cardAnimate 0.5s ease forwards;
+  opacity: 0;
+}
+
+.stat-inline-card span {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.stat-inline-card strong {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ---------- Dashboard grid (3 columns) ---------- */
+.dashboard-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ---------- Quick actions row ---------- */
+.dashboard-quick-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* ---------- CSS bar chart ---------- */
+.chart-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 150px;
+}
+
+.chart-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.chart-bar-track {
+  width: 100%;
+  max-width: 36px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  flex: 1;
+}
+
+.chart-bar-fill {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  transition: height 0.6s ease;
+  min-height: 2px;
+}
+
+.chart-bar-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.chart-empty {
+  width: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  padding: var(--space-xl) 0;
+}
+
+/* ---------- Progress blocks (dashboard) ---------- */
+.progress-block {
+  margin-bottom: var(--space-md);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.progress-label span:last-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* ---------- Attendance donut ---------- */
+.attendance-donut {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-md) 0;
+}
+
+.attendance-donut-ring {
+  --rate: 0%;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  background: conic-gradient(var(--primary) var(--rate), var(--border) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.attendance-donut-ring::before {
+  content: '';
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+}
+
+.attendance-donut-ring span {
+  position: relative;
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+}
+
+/* ---------- Inline bars (gender dist) ---------- */
+.inline-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.inline-bar-item {
+  display: grid;
+  grid-template-columns: 64px 1fr 40px;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ---------- Activity rows ---------- */
+.activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-row:last-child {
+  border-bottom: none;
+}
+
+.activity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ---------- Filter bar wrap ---------- */
+.filter-bar-wrap {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  align-items: flex-end;
+}
+
+.filter-bar-wrap .search-box {
+  margin-bottom: 0;
+}
+
+/* ---------- Bulk action bar ---------- */
+.bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+  background: var(--primary-bg);
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+/* ---------- Table page size ---------- */
+.table-page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.table-page-size .form-select {
+  width: auto;
+  padding: 6px 10px;
+  font-size: var(--font-size-sm);
+}
+
+/* ---------- Student name link ---------- */
+.student-name-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.student-name-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Profile card (StudentProfile) ---------- */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.profile-card .profile-avatar {
+  width: 84px;
+  height: 84px;
+  font-size: var(--font-size-3xl);
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.profile-info h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.profile-meta {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.profile-badges {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+}
+
+/* ---------- Tabs (profile / attendance / courses / exams) ---------- */
+.profile-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-lg);
+  overflow-x: auto;
+}
+
+.profile-tab {
+  padding: 12px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  margin-bottom: -1px;
+}
+
+.profile-tab:hover {
+  color: var(--primary);
+}
+
+.profile-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.profile-tab-content {
+  min-height: 200px;
+}
+
+/* ---------- Attendance toggle buttons ---------- */
+.attendance-toggle {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.toggle-btn.present {
+  background: var(--success-light);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.toggle-btn.absent {
+  background: var(--danger-light);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- Cards grid (courses / exams) ---------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  animation: cardAnimate 0.4s ease forwards;
+  opacity: 0;
+}
+
+.course-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.course-card-header h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.course-card-header .text-muted {
+  font-size: var(--font-size-xs);
+}
+
+.course-card-meta {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.course-card-meta span {
+  background: var(--bg-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+}
+
+.course-card > .text-muted {
+  font-size: var(--font-size-sm);
+}
+
+.course-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: var(--space-sm);
+}
+
+/* ---------- Marks input ---------- */
+.marks-input {
+  width: 72px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  transition: var(--transition);
+}
+
+.marks-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
+}
+
+/* ---------- Marksheet ---------- */
+.marksheet-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.marksheet-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.marksheet {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--space-xl);
+}
+
+.marksheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-md);
+  gap: var(--space-md);
+}
+
+.marksheet-header h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.marksheet-header p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.marksheet-avatar {
+  width: 72px;
+  height: 72px;
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.marksheet-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.marksheet-info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.marksheet-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.marksheet-value {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.marksheet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--border);
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+/* ---------- Import card ---------- */
+.import-card {
+  margin-bottom: var(--space-lg);
+}
+
+/* ---------- Notifications ---------- */
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.notification-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.notification-item.unread {
+  background: var(--primary-bg);
+  border-left: 3px solid var(--primary);
+}
+
+.notification-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.notification-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-body h4 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.notification-body p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.notification-body .text-muted {
+  font-size: var(--font-size-xs);
+}
+
+.notification-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ---------- Settings form grid ---------- */
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+/* ---------- Form hint ---------- */
+.form-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ---------- Empty state action ---------- */
+.empty-state-action {
+  margin-top: var(--space-md);
+}
+
+/* ---------- Marksheet print ---------- */
+@media print {
+  .marksheet-actions {
+    display: none !important;
+  }
+
+  .marksheet {
+    box-shadow: none !important;
+    border-color: #ddd !important;
+  }
+}
+
+/* ---------- Responsive additions ---------- */
+@media (max-width: 1024px) {
+  .dashboard-grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .marksheet-info {
+    grid-template-columns: 1fr;
+  }
+
+  .marksheet {
+    padding: var(--space-md);
+  }
+}

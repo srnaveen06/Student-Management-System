@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 
-const StudentForm = ({ initialData, onSubmit, isEditing }) => {
+const StudentForm = forwardRef(({ initialData, onSubmit, isEditing, showButtons = true, onFieldsChange, onInvalid }, ref) => {
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
   // Form state — holds all field values
@@ -11,6 +11,7 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
     phone: initialData?.phone || '',
     gender: initialData?.gender || '',
     branch: initialData?.branch || '',
+    institute: initialData?.institute || '',
     semester: initialData?.semester || '',
     dob: initialData?.dob ? initialData.dob.split('T')[0] : '',
     address: initialData?.address || '',
@@ -29,7 +30,9 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const next = { ...formData, [name]: value };
+    setFormData(next);
+    if (onFieldsChange) onFieldsChange(next);
     // Clear error for this field when user types
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -73,6 +76,7 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
     }
     if (!formData.gender) newErrors.gender = 'Gender is required';
     if (!formData.branch) newErrors.branch = 'Branch is required';
+    if (!formData.institute.trim()) newErrors.institute = 'Institute is required';
     if (!formData.semester) newErrors.semester = 'Semester is required';
     if (!formData.dob) newErrors.dob = 'Date of birth is required';
     if (!formData.address.trim()) newErrors.address = 'Address is required';
@@ -81,10 +85,12 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  // Build FormData + call onSubmit (exposed via ref so a parent can submit)
+  const submitForm = () => {
+    if (!validate()) {
+      if (onInvalid) onInvalid();
+      return;
+    }
 
     // Build FormData object for file upload
     const submitData = new FormData();
@@ -94,6 +100,7 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
     submitData.append('phone', formData.phone);
     submitData.append('gender', formData.gender);
     submitData.append('branch', formData.branch);
+    submitData.append('institute', formData.institute);
     submitData.append('semester', formData.semester);
     submitData.append('dob', formData.dob);
     submitData.append('address', formData.address);
@@ -103,6 +110,14 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
     }
 
     onSubmit(submitData);
+  };
+
+  useImperativeHandle(ref, () => ({ submitForm }));
+
+  // Handle form submission (form <form> submit event)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitForm();
   };
 
   return (
@@ -217,6 +232,22 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
           {errors.branch && <span className="form-error">{errors.branch}</span>}
         </div>
 
+        {/* Institute */}
+        <div className="form-group">
+          <label className="form-label">
+            Institute <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            name="institute"
+            className={`form-input ${errors.institute ? 'error' : ''}`}
+            placeholder="Enter institute name"
+            value={formData.institute}
+            onChange={handleChange}
+          />
+          {errors.institute && <span className="form-error">{errors.institute}</span>}
+        </div>
+
         {/* Semester */}
         <div className="form-group">
           <label className="form-label">
@@ -320,20 +351,22 @@ const StudentForm = ({ initialData, onSubmit, isEditing }) => {
       </div>
 
       {/* Submit Buttons */}
-      <div className="form-actions">
-        <button
-          type="button"
-          className="btn btn-outline"
-          onClick={() => window.history.back()}
-        >
-          Cancel
-        </button>
-        <button type="submit" className="btn btn-primary">
-          {isEditing ? '💾 Update Student' : '➕ Add Student'}
-        </button>
-      </div>
+      {showButtons && (
+        <div className="form-actions">
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={() => window.history.back()}
+          >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary">
+            {isEditing ? '💾 Update Student' : '➕ Add Student'}
+          </button>
+        </div>
+      )}
     </form>
   );
-};
+});
 
 export default StudentForm;

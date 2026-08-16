@@ -187,3 +187,192 @@
   transform: translateY(-50%);
   color: var(--text-muted);
 }
+
+/* ============================================
+   Add Student Tabs
+   ============================================ */
+.add-student-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.add-student-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-student-tab:hover {
+  color: var(--primary);
+}
+
+.add-student-tab.active {
+  background: var(--bg-secondary);
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 -2px 0 var(--primary) inset;
+}
+
+.add-student-tab-icon {
+  font-size: var(--font-size-base);
+}
+
+.add-student-tab-panels {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tab-hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.tab-alert {
+  padding: 10px 14px;
+  border: 1px solid var(--warning-light);
+  background: var(--warning-light);
+  color: var(--warning);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tab-subtitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.tab-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.tab-column {
+  min-width: 0;
+}
+
+.tab-check-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+}
+
+.tab-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  min-width: 0;
+}
+
+.tab-check-item:hover {
+  background: var(--primary-bg);
+  border-color: var(--primary-bg);
+}
+
+.tab-check-item > span {
+  min-width: 0;
+}
+
+.tab-check-item input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--primary);
+}
+
+.tab-muted {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.tab-inline-form {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+}
+
+.tab-inline-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.tab-inline-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.tab-added-list {
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tab-added-list .tab-subtitle {
+  margin: 0;
+}
+
+.tab-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--primary-bg);
+  font-size: var(--font-size-sm);
+}
+
+.btn-outline-danger {
+  border: 1px solid var(--danger-light);
+  color: var(--danger);
+  background: transparent;
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-outline-danger:hover {
+  background: var(--danger-light);
+  color: var(--danger);
+}

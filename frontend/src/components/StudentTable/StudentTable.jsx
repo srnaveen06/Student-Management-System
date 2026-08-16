@@ -1,17 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Student data table with photo, info, status, and action buttons
-const StudentTable = ({ students, onDelete, onView }) => {
+// Student data table with photo, info, status, fee info, bulk selection, and action buttons
+const StudentTable = ({
+  students,
+  onDelete,
+  onView,
+  onProfile,
+  selected = [],
+  onToggleSelect,
+  onToggleAll,
+  canManage = true
+}) => {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-  // Get initials from name for avatar placeholder
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
-  // If no students, show empty state
   if (!students || students.length === 0) {
     return (
       <div className="empty-state">
@@ -22,26 +29,55 @@ const StudentTable = ({ students, onDelete, onView }) => {
     );
   }
 
+  const allSelected = students.length > 0 && students.every(s => selected.includes(s.id));
+  const feeBadge = (s) => {
+    const status = s.fee_status;
+    if (!status) return <span className="badge badge-inactive">No Fee</span>;
+    if (status === 'Paid') return <span className="badge badge-active">{status}</span>;
+    if (status === 'Partially Paid') return <span className="badge badge-warning">{status}</span>;
+    return <span className="badge badge-inactive">{status}</span>;
+  };
+
   return (
     <div className="table-wrapper">
       <table className="data-table">
         <thead>
           <tr>
+            {canManage && (
+              <th className="col-check">
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  onChange={onToggleAll}
+                  aria-label="Select all"
+                />
+              </th>
+            )}
             <th>Photo</th>
             <th>Student ID</th>
             <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
             <th>Branch</th>
+            <th>Institute</th>
             <th>Semester</th>
+            <th>Fee Status</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {students.map((student) => (
-            <tr key={student.id}>
-              {/* Profile Photo */}
+            <tr key={student.id} className={selected.includes(student.id) ? 'row-selected' : ''}>
+              {canManage && (
+                <td className="col-check">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(student.id)}
+                    onChange={() => onToggleSelect(student.id)}
+                    aria-label={`Select ${student.name}`}
+                  />
+                </td>
+              )}
+
               <td>
                 <div className="student-avatar">
                   {student.image ? (
@@ -60,36 +96,31 @@ const StudentTable = ({ students, onDelete, onView }) => {
                 </div>
               </td>
 
-              {/* Student ID */}
               <td>
                 <span className="student-id">{student.student_id}</span>
               </td>
 
-              {/* Name */}
               <td>
-                <span className="student-name">{student.name}</span>
+                <button
+                  className="student-name student-name-link"
+                  onClick={() => (onProfile ? onProfile(student) : onView(student))}
+                >
+                  {student.name}
+                </button>
               </td>
 
-              {/* Email */}
-              <td>{student.email}</td>
-
-              {/* Phone */}
-              <td>{student.phone}</td>
-
-              {/* Branch */}
               <td>{student.branch}</td>
-
-              {/* Semester */}
+              <td>{student.institute}</td>
               <td>Sem {student.semester}</td>
 
-              {/* Status Badge */}
+              <td>{feeBadge(student)}</td>
+
               <td>
-                <span className={`badge badge-${student.status.toLowerCase()}`}>
+                <span className={`badge badge-${String(student.status).toLowerCase()}`}>
                   {student.status}
                 </span>
               </td>
 
-              {/* Action Buttons */}
               <td>
                 <div className="action-buttons">
                   <button
@@ -99,20 +130,24 @@ const StudentTable = ({ students, onDelete, onView }) => {
                   >
                     👁
                   </button>
-                  <button
-                    className="action-btn edit"
-                    title="Edit Student"
-                    onClick={() => navigate(`/students/edit/${student.id}`)}
-                  >
-                    ✏
-                  </button>
-                  <button
-                    className="action-btn delete"
-                    title="Delete Student"
-                    onClick={() => onDelete(student)}
-                  >
-                    🗑
-                  </button>
+                  {canManage && (
+                    <>
+                      <button
+                        className="action-btn edit"
+                        title="Edit Student"
+                        onClick={() => navigate(`/students/edit/${student.id}`)}
+                      >
+                        ✏
+                      </button>
+                      <button
+                        className="action-btn delete"
+                        title="Delete Student"
+                        onClick={() => onDelete(student)}
+                      >
+                        🗑
+                      </button>
+                    </>
+                  )}
                 </div>
               </td>
             </tr>

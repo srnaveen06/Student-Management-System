@@ -6,6 +6,22 @@ require('dotenv').config();
 // Import routes
 const studentRoutes = require('./routes/studentRoutes');
 const authRoutes = require('./routes/authRoutes');
+const courseRoutes = require('./routes/courseRoutes');
+const subjectRoutes = require('./routes/subjectRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
+const feeRoutes = require('./routes/feeRoutes');
+const examinationRoutes = require('./routes/examinationRoutes');
+const markRoutes = require('./routes/markRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const activityLogRoutes = require('./routes/activityLogRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const aiRoutes = require('./routes/aiRoutes');
+const calendarRoutes = require('./routes/calendarRoutes');
+const announcementRoutes = require('./routes/announcementRoutes');
+const leaveRoutes = require('./routes/leaveRoutes');
+const documentRoutes = require('./routes/documentRoutes');
+const idCardRoutes = require('./routes/idCardRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,6 +51,50 @@ app.use('/api/auth', authRoutes);
 // Student CRUD routes (all protected)
 app.use('/api/students', studentRoutes);
 
+// Courses & subjects
+app.use('/api/courses', courseRoutes);
+app.use('/api/subjects', subjectRoutes);
+
+// Attendance
+app.use('/api/attendance', attendanceRoutes);
+
+// Fees & payments
+app.use('/api/fees', feeRoutes);
+
+// Examinations & marks
+app.use('/api/examinations', examinationRoutes);
+app.use('/api/marks', markRoutes);
+
+// Dashboard analytics
+app.use('/api/dashboard', dashboardRoutes);
+
+// Notifications
+app.use('/api/notifications', notificationRoutes);
+
+// Activity logs
+app.use('/api/activity-logs', activityLogRoutes);
+
+// Settings
+app.use('/api/settings', settingsRoutes);
+
+// AI platform
+app.use('/api/ai', aiRoutes);
+
+// Academic Calendar
+app.use('/api/calendar', calendarRoutes);
+
+// Announcements
+app.use('/api/announcements', announcementRoutes);
+
+// Leave Management
+app.use('/api/leaves', leaveRoutes);
+
+// Student Documents (cross-student listing)
+app.use('/api/documents', documentRoutes);
+
+// Student ID Cards + QR verification
+app.use('/api/id-cards', idCardRoutes);
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Student Management System API is running' });
@@ -60,6 +120,10 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ success: false, message: err.message });
   }
 
+  if (err.message && err.message.includes('Only CSV, text, JSON')) {
+    return res.status(400).json({ error: err.message });
+  }
+
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
@@ -68,5 +132,9 @@ app.listen(PORT, () => {
   console.log(`\n🚀 Student Management System API`);
   console.log(`📡 Server running on http://localhost:${PORT}`);
   console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`👥 Students API: http://localhost:${PORT}/api/students\n`);
+  console.log(`👥 Students API: http://localhost:${PORT}/api/students`);
+  console.log(`📚 Courses API: http://localhost:${PORT}/api/courses`);
+  console.log(`📅 Attendance API: http://localhost:${PORT}/api/attendance`);
+  console.log(`💰 Fees API: http://localhost:${PORT}/api/fees`);
+  console.log(`📝 Exams API: http://localhost:${PORT}/api/examinations\n`);
 });

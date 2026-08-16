@@ -1,25 +1,48 @@
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-const api = axios.create({
-  baseURL: API_URL,
-  headers: { 'Content-Type': 'application/json' }
-});
+import apiClient from './apiClient';
 
 const authApi = {
 
   // POST /api/auth/login — Login with username and password
   async login(username, password) {
-    const response = await api.post('/auth/login', { username, password });
+    const response = await apiClient.post('/auth/login', { username, password });
     return response.data;
   },
 
   // GET /api/auth/verify — Verify token is valid
   async verify(token) {
-    const response = await api.get('/auth/verify', {
+    const response = await apiClient.get('/auth/verify', {
       headers: { Authorization: `Bearer ${token}` }
     });
+    return response.data;
+  },
+
+  // PUT /api/auth/password — Change admin password
+  async changePassword(currentPassword, newPassword) {
+    const response = await apiClient.put('/auth/password', { currentPassword, newPassword });
+    return response.data;
+  },
+
+  // GET /api/auth/users — List users (super_admin only)
+  async getUsers() {
+    const response = await apiClient.get('/auth/users');
+    return response.data;
+  },
+
+  // POST /api/auth/users — Create user (super_admin only)
+  async createUser(userData) {
+    const response = await apiClient.post('/auth/users', userData);
+    return response.data;
+  },
+
+  // PUT /api/auth/users/:id/role — Change user role (super_admin only)
+  async changeRole(id, role) {
+    const response = await apiClient.put(`/auth/users/${id}/role`, { role });
+    return response.data;
+  },
+
+  // DELETE /api/auth/users/:id — Delete user (super_admin only)
+  async deleteUser(id) {
+    const response = await apiClient.delete(`/auth/users/${id}`);
     return response.data;
   }
 };

@@ -27,10 +27,24 @@ A full-stack web application for managing student records with a modern, respons
 - Sort by name (A-Z, Z-A), newest, or oldest
 - Pagination (10 students per page)
 
+### Reports
+- Summary cards (total, active, inactive, branches)
+- Distribution breakdown by branch, institute, semester, gender, and status
+- Progress bars with percentages
+- Export report data to CSV
+- Print-friendly reports
+
+### Settings
+- Admin profile overview
+- Light/Dark theme preference
+- Change admin password
+- Logout option
+
 ### Authentication
 - JWT-based admin login
 - Protected routes
 - Auto-redirect on token expiry
+- Change password endpoint
 
 ### UI/UX
 - Modern, minimal design with CSS variables
@@ -83,6 +97,8 @@ student-management-system/
 │   │   │   ├── Students.jsx
 │   │   │   ├── AddStudent.jsx
 │   │   │   ├── EditStudent.jsx
+│   │   │   ├── Reports.jsx
+│   │   │   ├── Settings.jsx
 │   │   │   ├── Login.jsx
 │   │   │   └── NotFound.jsx
 │   │   ├── services/
@@ -100,6 +116,8 @@ student-management-system/
 │   │   │   ├── table.css
 │   │   │   ├── form.css
 │   │   │   ├── layout.css
+│   │   │   ├── reports.css
+│   │   │   ├── settings.css
 │   │   │   └── responsive.css
 │   │   ├── App.jsx
 │   │   └── index.js
@@ -210,6 +228,7 @@ Navigate to `http://localhost:3000/login` and use:
 |--------|----------|-------------|------|
 | POST | `/api/auth/login` | Admin login | No |
 | GET | `/api/auth/verify` | Verify JWT token | Yes |
+| PUT | `/api/auth/password` | Change admin password | Yes |
 
 ### Students
 
@@ -218,6 +237,7 @@ Navigate to `http://localhost:3000/login` and use:
 | GET | `/api/students` | Get all students (with query params) | Yes |
 | GET | `/api/students/stats` | Get dashboard statistics | Yes |
 | GET | `/api/students/branches` | Get unique branches | Yes |
+| GET | `/api/students/reports` | Get aggregated report data | Yes |
 | GET | `/api/students/:id` | Get single student | Yes |
 | POST | `/api/students` | Create student (multipart/form-data) | Yes |
 | PUT | `/api/students/:id` | Update student (multipart/form-data) | Yes |

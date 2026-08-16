@@ -1,59 +1,29 @@
-import axios from 'axios';
-
-// Base URL for student API — change to production URL when deploying
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-// Create axios instance with default config
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
-
-// Request interceptor — attach JWT token to every request automatically
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor — handle 401 errors (expired token)
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('admin');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
+import apiClient from './apiClient';
 
 // Student API functions
 const studentApi = {
 
   // Get all students with query params (search, filter, sort, page)
   async getAll(params = {}) {
-    const response = await api.get('/students', { params });
+    const response = await apiClient.get('/students', { params });
     return response.data;
   },
 
   // Get a single student by ID
   async getById(id) {
-    const response = await api.get(`/students/${id}`);
+    const response = await apiClient.get(`/students/${id}`);
+    return response.data;
+  },
+
+  // Get full student profile (overview, documents, attendance, fees, marks)
+  async getProfile(id) {
+    const response = await apiClient.get(`/students/profile/${id}`);
     return response.data;
   },
 
   // Create a new student (with optional image)
   async create(formData) {
-    const response = await api.post('/students', formData, {
+    const response = await apiClient.post('/students', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
@@ -61,7 +31,7 @@ const studentApi = {
 
   // Update a student (with optional new image)
   async update(id, formData) {
-    const response = await api.put(`/students/${id}`, formData, {
+    const response = await apiClient.put(`/students/${id}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
@@ -69,19 +39,69 @@ const studentApi = {
 
   // Delete a student
   async delete(id) {
-    const response = await api.delete(`/students/${id}`);
+    const response = await apiClient.delete(`/students/${id}`);
+    return response.data;
+  },
+
+  // Bulk update status (activate/deactivate)
+  async bulkStatus(ids, status) {
+    const response = await apiClient.post('/students/bulk/status', { ids, status });
+    return response.data;
+  },
+
+  // Bulk delete
+  async bulkDelete(ids) {
+    const response = await apiClient.post('/students/bulk/delete', { ids });
     return response.data;
   },
 
   // Get dashboard statistics
   async getStats() {
-    const response = await api.get('/students/stats');
+    const response = await apiClient.get('/students/stats');
     return response.data;
   },
 
   // Get all unique branches for filter dropdown
   async getBranches() {
-    const response = await api.get('/students/branches');
+    const response = await apiClient.get('/students/branches');
+    return response.data;
+  },
+
+  // Get all unique institutes
+  async getInstitutes() {
+    const response = await apiClient.get('/students/institutes');
+    return response.data;
+  },
+
+  // Get aggregated data for reports
+  async getReports() {
+    const response = await apiClient.get('/students/reports');
+    return response.data;
+  },
+
+  // CSV import (preview with dryRun, then confirm)
+  async importStudents(formData, dryRun = true) {
+    const response = await apiClient.post(`/students/import?dryRun=${dryRun}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
+
+  // Documents
+  async addDocument(studentId, formData) {
+    const response = await apiClient.post(`/students/${studentId}/documents`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
+
+  async getDocuments(studentId) {
+    const response = await apiClient.get(`/students/${studentId}/documents`);
+    return response.data;
+  },
+
+  async deleteDocument(docId) {
+    const response = await apiClient.delete(`/students/documents/${docId}`);
     return response.data;
   }
 };

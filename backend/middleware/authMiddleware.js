@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
+const db = require('../config/db');
 require('dotenv').config();
 
-// Middleware to protect routes — verifies JWT token from request headers
-const authMiddleware = (req, res, next) => {
+// Middleware to protect routes — verifies JWT token from request headers,
+// then loads the current user from the database so role/permission changes
+// take effect immediately (and disabled users lose access).
+const authMiddleware = async (req, res, next) => {
   try {
-    // Get token from Authorization header: "Bearer <token>"
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -12,12 +14,27 @@ const authMiddleware = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-
-    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Attach decoded user info to request object for use in controllers
-    req.user = decoded;
+    // Load fresh user data to get the current role and username
+    const [rows] = await db.execute(
+      'SELECT id, username, role, name, email, image FROM admins WHERE id = ?',
+      [decoded.id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(401).json({ success: false, message: 'User no longer exists.' });
+    }
+
+    const user = rows[0];
+    req.user = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      name: user.name,
+      email: user.email,
+      image: user.image
+    };
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
