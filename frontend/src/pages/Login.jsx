@@ -1,250 +1,223 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield, Sparkles, Brain, GraduationCap } from 'lucide-react';
 import authApi from '../services/authApi';
 import { useToast } from '../context/ToastContext';
-import { LogIn, AlertCircle } from 'lucide-react';
+import '../styles/login.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({ username: '', password: '' });
+  const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('remember_me') === 'true');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showForgot, setShowForgot] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    setError('');
-  };
+    if (error) setError('');
+  }, [error]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.username || !formData.password) {
-      setError('Please enter both username and password');
+    if (!formData.username.trim() && !formData.password) {
+      setError('Please enter your username and password');
+      return;
+    }
+    if (!formData.username.trim()) {
+      setError('Please enter your username');
+      return;
+    }
+    if (!formData.password) {
+      setError('Please enter your password');
       return;
     }
 
     setLoading(true);
+    setError('');
+
     try {
-      const response = await authApi.login(formData.username, formData.password);
+      const response = await authApi.login(formData.username.trim(), formData.password);
 
       if (response.success) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('admin', JSON.stringify(response.data.admin));
 
+        if (rememberMe) {
+          localStorage.setItem('remember_me', 'true');
+        } else {
+          localStorage.removeItem('remember_me');
+        }
+
         toast.success('Login successful! Welcome back.');
         navigate('/');
       }
     } catch (err) {
-      const message = err.response?.data?.message || 'Login failed. Please try again.';
-      setError(message);
-      toast.error(message);
+      const status = err.response?.status;
+      const message = err.response?.data?.message;
+
+      if (status === 401) {
+        setError('Incorrect username or password.');
+      } else if (status === 403) {
+        setError('Your account is currently inactive. Please contact an administrator.');
+      } else if (status === 400) {
+        setError('Please enter your username and password.');
+      } else if (!err.response) {
+        setError('Unable to connect to the server. Please try again.');
+      } else {
+        setError(message || 'Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      background: 'var(--bg-primary)',
-    }}>
-      {/* Left branding panel */}
-      <div style={{
-        flex: 1,
-        background: 'linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '48px',
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'none',
-      }} className="login-branding">
-        <div style={{
-          position: 'absolute',
-          top: '-20%',
-          right: '-10%',
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
-          borderRadius: '50%',
-        }} />
-        <div style={{
-          position: 'relative',
-          zIndex: 1,
-          textAlign: 'center',
-          color: 'white',
-        }}>
-          <div style={{
-            width: '72px',
-            height: '72px',
-            background: 'rgba(255,255,255,0.2)',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '32px',
-            fontWeight: '800',
-            marginBottom: '24px',
-            backdropFilter: 'blur(4px)',
-            margin: '0 auto 24px',
-          }}>S</div>
-          <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.02em' }}>
-            Student Management System
-          </h1>
-          <p style={{ fontSize: '16px', opacity: 0.85, maxWidth: '400px', lineHeight: 1.6 }}>
-            Professional College ERP for managing students, attendance, fees, examinations, and more.
-          </p>
-        </div>
-      </div>
-
-      {/* Right login panel */}
-      <div style={{
-        width: '100%',
-        maxWidth: '480px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px',
-      }}>
-        <div style={{ width: '100%', maxWidth: '360px' }}>
-          {/* Logo (mobile) */}
-          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-            <div style={{
-              width: '52px',
-              height: '52px',
-              background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
-              borderRadius: 'var(--radius-xl)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '22px',
-              fontWeight: '800',
-              color: 'white',
-              margin: '0 auto 16px',
-              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
-            }}>
-              S
-            </div>
-            <h1 style={{
-              fontSize: '22px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '4px',
-              letterSpacing: '-0.02em',
-            }}>
-              Welcome back
-            </h1>
-            <p style={{
-              color: 'var(--text-secondary)',
-              fontSize: '14px',
-            }}>
-              Sign in to your account to continue
-            </p>
+    <div className="login-page">
+      <div className="login-card">
+        {/* Brand */}
+        <div className="login-brand">
+          <div className="login-logo">
+            <GraduationCap size={28} strokeWidth={2} />
           </div>
+          <h1>StudentOS</h1>
+          <p>Intelligent College Management</p>
+        </div>
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit}>
-            {error && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 14px',
-                borderRadius: 'var(--radius-lg)',
-                background: 'var(--danger-light)',
-                color: 'var(--danger)',
-                fontSize: '13px',
-                fontWeight: '500',
-                marginBottom: '20px',
-              }}>
-                <AlertCircle size={16} />
-                {error}
-              </div>
-            )}
+        {/* Welcome */}
+        <div className="login-welcome">
+          <h2>Welcome back</h2>
+          <p>Sign in to your account to continue</p>
+        </div>
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                marginBottom: '6px',
-              }}>
-                Username
-              </label>
+        {/* Error */}
+        {error && (
+          <div className="login-error" role="alert">
+            <AlertCircle size={16} />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} noValidate>
+          {/* Username */}
+          <div className="login-form-group">
+            <label htmlFor="login-username">Username</label>
+            <div className="login-input-wrap">
+              <User size={16} className="login-input-icon" />
               <input
+                id="login-username"
                 type="text"
                 name="username"
-                className="form-input"
-                style={{ width: '100%' }}
                 placeholder="Enter your username"
                 value={formData.username}
                 onChange={handleChange}
                 autoComplete="username"
                 autoFocus
+                disabled={loading}
               />
             </div>
+          </div>
 
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                marginBottom: '6px',
-              }}>
-                Password
-              </label>
+          {/* Password */}
+          <div className="login-form-group">
+            <label htmlFor="login-password">Password</label>
+            <div className="login-input-wrap">
+              <Lock size={16} className="login-input-icon" />
               <input
-                type="password"
+                id="login-password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
-                className="form-input"
-                style={{ width: '100%' }}
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
                 autoComplete="current-password"
+                disabled={loading}
               />
+              <button
+                type="button"
+                className="login-password-toggle"
+                onClick={() => setShowPassword(prev => !prev)}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
+          </div>
 
+          {/* Remember me + Forgot */}
+          <div className="login-options-row">
+            <label className="login-remember">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={loading}
+              />
+              Remember me
+            </label>
             <button
-              type="submit"
-              className="btn btn-primary btn-lg"
-              style={{ width: '100%', justifyContent: 'center' }}
-              disabled={loading}
+              type="button"
+              className="login-forgot-link"
+              onClick={() => setShowForgot(true)}
             >
-              {loading ? (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} />
-                  Signing in...
-                </span>
-              ) : (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <LogIn size={18} />
-                  Sign In
-                </span>
-              )}
+              Forgot password?
             </button>
-          </form>
+          </div>
 
-          <p style={{
-            textAlign: 'center',
-            marginTop: '24px',
-            fontSize: '12px',
-            color: 'var(--text-muted)',
-            padding: '10px',
-            background: 'var(--bg-tertiary)',
-            borderRadius: 'var(--radius-lg)',
-          }}>
-            Default credentials: <strong>admin</strong> / <strong>admin123</strong>
-          </p>
+          {/* Submit */}
+          <button
+            type="submit"
+            className="login-submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="login-spinner" />
+                Signing in...
+              </>
+            ) : (
+              <>
+                Sign In
+                <ArrowRight size={16} />
+              </>
+            )}
+          </button>
+        </form>
+
+        {/* Footer tagline */}
+        <div className="login-footer">
+          <Shield size={12} />
+          Secure
+          <span className="login-footer-dot" />
+          Smart
+          <span className="login-footer-dot" />
+          AI-powered
         </div>
       </div>
+
+      {/* Forgot password modal */}
+      {showForgot && (
+        <div className="login-forgot-backdrop" onClick={() => setShowForgot(false)}>
+          <div className="login-forgot-card" onClick={(e) => e.stopPropagation()}>
+            <h3>Forgot password?</h3>
+            <p>
+              Contact your system administrator to reset your password.
+              For security reasons, password resets must be handled by an authorized administrator.
+            </p>
+            <div className="login-forgot-actions">
+              <button className="login-forgot-cancel" onClick={() => setShowForgot(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

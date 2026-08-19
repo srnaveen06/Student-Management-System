@@ -28,9 +28,12 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('admin');
-      window.location.href = '/login';
+      // Don't redirect if already on the login page (prevents reload loops)
+      if (window.location.pathname !== '/login') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('admin');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
