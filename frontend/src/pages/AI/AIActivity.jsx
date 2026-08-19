@@ -3,6 +3,7 @@ import { InlineLoader } from '../../components/Loader/Loader';
 import aiApi from '../../services/aiApi';
 import { formatDateTime } from '../../utils/format';
 import { intentLabel } from '../../utils/ai';
+import { RefreshCw } from 'lucide-react';
 
 const AIActivity = () => {
   const [logs, setLogs] = useState([]);
@@ -37,7 +38,7 @@ const AIActivity = () => {
             <option value={100}>100</option>
             <option value={200}>200</option>
           </select>
-          <button className="btn btn-outline btn-sm" onClick={() => load()}>↺ Refresh</button>
+          <button className="btn btn-outline btn-sm" onClick={() => load()}><RefreshCw size={14} /> Refresh</button>
         </div>
       </div>
 

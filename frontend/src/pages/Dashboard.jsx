@@ -7,8 +7,14 @@ import dashboardApi from '../services/dashboardApi';
 import aiApi from '../services/aiApi';
 import { useToast } from '../context/ToastContext';
 import { getInitials, formatCurrency, formatDate, timeAgo } from '../utils/format';
+import {
+  Users, UserCheck, BookOpen, Layers, IndianRupee, Clock,
+  CalendarCheck, Bell, ClipboardList, TrendingUp, TrendingDown,
+  ArrowRight, Plus, Download, CheckCircle, Sparkles, AlertTriangle,
+  GraduationCap, CreditCard, FolderOpen, Megaphone, CalendarDays,
+  Activity, BarChart3, Eye, ChevronRight, FileText
+} from 'lucide-react';
 
-// Simple CSS bar chart used across the dashboard
 const BarChart = ({ data, height = 120, color = 'var(--primary)', labelKey = 'label', valueKey = 'count' }) => {
   const max = Math.max(1, ...data.map(d => Number(d[valueKey]) || 0));
   return (
@@ -54,7 +60,6 @@ const Dashboard = () => {
     fetchDashboard();
   }, [toast]);
 
-  // AI insights — non-blocking; failures just hide the section.
   useEffect(() => {
     const fetchInsights = async () => {
       try {
@@ -81,34 +86,90 @@ const Dashboard = () => {
     ? Math.round((fees.collectedFees / fees.totalFees) * 100)
     : 0;
 
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Welcome back! Here's what's happening with your students.</p>
+      {/* Hero Banner */}
+      <div className="dashboard-hero">
+        <div className="dashboard-hero-content">
+          <h1>{greeting}, Admin</h1>
+          <p>Here's what's happening with your institution today. You have {counts.pendingLeaves || 0} pending leaves and {lists.unreadNotifications || 0} unread notifications.</p>
+          <button className="btn" onClick={() => navigate('/students/add')}>
+            <Plus size={16} />
+            Add New Student
+          </button>
         </div>
       </div>
 
-      {/* Stat Cards */}
+      {/* KPI Stats */}
       <div className="dashboard-stats">
-        <DashboardCard icon="👥" iconColor="blue" title="Total Students" value={counts.totalStudents || 0} />
-        <DashboardCard icon="✅" iconColor="green" title="Active Students" value={counts.activeStudents || 0} />
-        <DashboardCard icon="📚" iconColor="teal" title="Courses" value={counts.totalCourses || 0} />
-        <DashboardCard icon="🗂" iconColor="purple" title="Subjects" value={counts.totalSubjects || 0} />
-        <DashboardCard icon="💰" iconColor="orange" title="Fees Collected" value={formatCurrency(fees.collectedFees)} />
-        <DashboardCard icon="⏳" iconColor="red" title="Pending Fees" value={formatCurrency(fees.pendingFees)} />
-        <DashboardCard icon="📅" iconColor="green" title="Attendance Rate" value={`${attendance.rate || 0}%`} />
-        <DashboardCard icon="🔔" iconColor="red" title="Unread Notifications" value={lists.unreadNotifications || 0} />
-        <DashboardCard icon="📝" iconColor="orange" title="Pending Leaves" value={counts.pendingLeaves || 0} />
+        <DashboardCard
+          icon={<Users size={22} />}
+          iconColor="blue"
+          title="Total Students"
+          value={counts.totalStudents || 0}
+        />
+        <DashboardCard
+          icon={<UserCheck size={22} />}
+          iconColor="green"
+          title="Active Students"
+          value={counts.activeStudents || 0}
+        />
+        <DashboardCard
+          icon={<BookOpen size={22} />}
+          iconColor="teal"
+          title="Courses"
+          value={counts.totalCourses || 0}
+        />
+        <DashboardCard
+          icon={<Layers size={22} />}
+          iconColor="purple"
+          title="Subjects"
+          value={counts.totalSubjects || 0}
+        />
+        <DashboardCard
+          icon={<IndianRupee size={22} />}
+          iconColor="green"
+          title="Fees Collected"
+          value={formatCurrency(fees.collectedFees)}
+        />
+        <DashboardCard
+          icon={<Clock size={22} />}
+          iconColor="red"
+          title="Pending Fees"
+          value={formatCurrency(fees.pendingFees)}
+        />
+        <DashboardCard
+          icon={<CalendarCheck size={22} />}
+          iconColor="teal"
+          title="Attendance Rate"
+          value={`${attendance.rate || 0}%`}
+        />
+        <DashboardCard
+          icon={<Bell size={22} />}
+          iconColor="red"
+          title="Unread Notifications"
+          value={lists.unreadNotifications || 0}
+        />
+        <DashboardCard
+          icon={<ClipboardList size={22} />}
+          iconColor="orange"
+          title="Pending Leaves"
+          value={counts.pendingLeaves || 0}
+        />
       </div>
 
       {/* AI Insights */}
       {aiInsights.length > 0 && (
-        <div className="dashboard-section" style={{ marginBottom: '24px' }}>
+        <div className="dashboard-section" style={{ marginBottom: 'var(--space-md)' }}>
           <div className="dashboard-section-header">
-            <h2>✨ AI Insights</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/ai/insights')}>View All →</button>
+            <h2><Sparkles size={18} /> AI Insights</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/ai/insights')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {aiLoading ? <InlineLoader /> : <InsightsList insights={aiInsights.slice(0, 3)} />}
@@ -120,7 +181,7 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Student Registrations (12 months)</h2>
+            <h2><TrendingUp size={18} /> Student Registrations</h2>
           </div>
           <div className="dashboard-section-body">
             <BarChart data={charts.monthlyRegistrations || []} height={130} color="var(--primary)" />
@@ -129,7 +190,7 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Fee Collection Trend (12 months)</h2>
+            <h2><IndianRupee size={18} /> Fee Collection Trend</h2>
           </div>
           <div className="dashboard-section-body">
             <BarChart data={charts.feeTrend || []} height={130} color="var(--success)" valueKey="total" />
@@ -137,16 +198,16 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Fee + Attendance Summary */}
+      {/* Fee + Attendance + Status */}
       <div className="dashboard-grid dashboard-grid-3">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Fee Summary</h2>
+            <h2><CreditCard size={18} /> Fee Summary</h2>
           </div>
           <div className="dashboard-section-body">
             <div className="progress-block">
               <div className="progress-label">
-                <span>Collected</span>
+                <span>Collection Rate</span>
                 <span>{collectionRate}%</span>
               </div>
               <div className="progress-bar">
@@ -164,7 +225,7 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Attendance Overview</h2>
+            <h2><Activity size={18} /> Attendance Overview</h2>
           </div>
           <div className="dashboard-section-body">
             <div className="attendance-donut">
@@ -185,35 +246,38 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Students by Status</h2>
+            <h2><BarChart3 size={18} /> Students by Branch</h2>
           </div>
           <div className="dashboard-section-body">
-            <BarChart data={charts.statusDist || []} height={110} color="var(--info)" />
-            <h2 style={{ fontSize: 'var(--font-size-lg)', marginTop: '16px' }}>By Gender</h2>
-            <div className="inline-bars">
-              {(charts.genderDist || []).map(item => (
-                <div key={item.gender} className="inline-bar-item">
-                  <span className="quick-stat-label">{item.gender || 'Other'}</span>
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${counts.totalStudents ? (item.count / counts.totalStudents) * 100 : 0}%`, background: 'var(--primary-light)' }}
-                    />
-                  </div>
-                  <span className="quick-stat-value">{item.count}</span>
-                </div>
-              ))}
-            </div>
+            <BarChart data={charts.branchDist || []} height={130} color="var(--warning)" />
           </div>
         </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="dashboard-quick-actions">
+        <button className="btn btn-primary" onClick={() => navigate('/students/add')}>
+          <Plus size={16} /> Add Student
+        </button>
+        <button className="btn btn-outline" onClick={() => navigate('/students/import')}>
+          <Download size={16} /> Import Students
+        </button>
+        <button className="btn btn-outline" onClick={() => navigate('/attendance')}>
+          <CalendarCheck size={16} /> Mark Attendance
+        </button>
+        <button className="btn btn-outline" onClick={() => navigate('/fees')}>
+          <IndianRupee size={16} /> Collect Fees
+        </button>
       </div>
 
       {/* Lists Row */}
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Recently Added Students</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/students')}>View All →</button>
+            <h2><GraduationCap size={18} /> Recently Added Students</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/students')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.recentStudents?.length > 0 ? (
@@ -240,8 +304,10 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Low Attendance Warnings</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/attendance')}>Manage →</button>
+            <h2><AlertTriangle size={18} /> Low Attendance Warnings</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/attendance')}>
+              Manage <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.lowAttendance?.length > 0 ? (
@@ -256,28 +322,33 @@ const Dashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="muted-center">No low-attendance students 🎉</p>
+              <p className="muted-center">No low-attendance students</p>
             )}
           </div>
         </div>
       </div>
 
+      {/* Exams + Payments */}
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Upcoming Examinations</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/examinations')}>View All →</button>
+            <h2><FileText size={18} /> Upcoming Examinations</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/examinations')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.upcomingExams?.length > 0 ? (
               lists.upcomingExams.map(exam => (
                 <div key={exam.id} className="recent-student">
-                  <div className="recent-student-avatar">{exam.subject_name?.charAt(0) || 'E'}</div>
+                  <div className="recent-student-avatar" style={{ background: 'var(--info-light)', color: 'var(--info)' }}>
+                    <FileText size={16} />
+                  </div>
                   <div className="recent-student-info">
                     <h4>{exam.exam_name}</h4>
                     <p>{exam.subject_name} · Sem {exam.semester}</p>
                   </div>
-                  <span className="badge badge-active">{formatDate(exam.exam_date)}</span>
+                  <span className="badge badge-info">{formatDate(exam.exam_date)}</span>
                 </div>
               ))
             ) : (
@@ -288,14 +359,18 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Recent Payments</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/fees')}>View All →</button>
+            <h2><IndianRupee size={18} /> Recent Payments</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/fees')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.recentPayments?.length > 0 ? (
               lists.recentPayments.map(payment => (
                 <div key={payment.id} className="recent-student">
-                  <div className="recent-student-avatar" style={{ background: 'var(--success-light)', color: 'var(--success)' }}>₹</div>
+                  <div className="recent-student-avatar" style={{ background: 'var(--success-light)', color: 'var(--success)' }}>
+                    <CheckCircle size={16} />
+                  </div>
                   <div className="recent-student-info">
                     <h4>{payment.student_name}</h4>
                     <p>{payment.receipt_number} · {payment.method}</p>
@@ -310,11 +385,14 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Activity + Status Dist */}
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Recent Activity</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/activity-logs')}>View All →</button>
+            <h2><Activity size={18} /> Recent Activity</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/activity-logs')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.recentActivities?.length > 0 ? (
@@ -322,8 +400,8 @@ const Dashboard = () => {
                 <div key={log.id} className="activity-row">
                   <span className="activity-dot" />
                   <div className="recent-student-info">
-                    <p>{log.description}</p>
-                    <span className="text-muted">{log.username} · {formatDate(log.created_at)}</span>
+                    <p style={{ fontSize: 'var(--font-size-sm)' }}>{log.description}</p>
+                    <span className="text-muted">{log.username} · {timeAgo(log.created_at)}</span>
                   </div>
                 </div>
               ))
@@ -335,10 +413,25 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>Students by Branch</h2>
+            <h2><Users size={18} /> Students by Status</h2>
           </div>
           <div className="dashboard-section-body">
-            <BarChart data={charts.branchDist || []} height={130} color="var(--warning)" />
+            <BarChart data={charts.statusDist || []} height={110} color="var(--info)" />
+            <h3 style={{ fontSize: 'var(--font-size-sm)', marginTop: '16px', marginBottom: '8px', color: 'var(--text-secondary)' }}>By Gender</h3>
+            <div className="inline-bars">
+              {(charts.genderDist || []).map(item => (
+                <div key={item.gender} className="inline-bar-item">
+                  <span className="quick-stat-label">{item.gender || 'Other'}</span>
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${counts.totalStudents ? (item.count / counts.totalStudents) * 100 : 0}%`, background: 'var(--primary-light)' }}
+                    />
+                  </div>
+                  <span className="quick-stat-value">{item.count}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -347,19 +440,23 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>🗓️ Upcoming Events</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/calendar')}>View Calendar →</button>
+            <h2><CalendarDays size={18} /> Upcoming Events</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/calendar')}>
+              View Calendar <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.upcomingEvents?.length > 0 ? (
               lists.upcomingEvents.map(event => (
                 <div key={event.id} className="recent-student">
-                  <div className="recent-student-avatar">🎉</div>
+                  <div className="recent-student-avatar" style={{ background: 'var(--primary-bg)', color: 'var(--primary)' }}>
+                    <CalendarDays size={16} />
+                  </div>
                   <div className="recent-student-info">
                     <h4>{event.title}</h4>
                     <p>{event.event_type} · {event.location || 'Campus'}</p>
                   </div>
-                  <span className="badge badge-active">{formatDate(event.start_date)}</span>
+                  <span className="badge badge-info">{formatDate(event.start_date)}</span>
                 </div>
               ))
             ) : (
@@ -370,8 +467,10 @@ const Dashboard = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>📢 Latest Announcements</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/announcements')}>View All →</button>
+            <h2><Megaphone size={18} /> Latest Announcements</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/announcements')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.latestAnnouncements?.length > 0 ? (
@@ -379,7 +478,7 @@ const Dashboard = () => {
                 <div key={ann.id} className="activity-row">
                   <span className="activity-dot" style={{ background: ann.is_pinned ? 'var(--warning)' : 'var(--primary)' }} />
                   <div className="recent-student-info">
-                    <p><strong>{ann.title}</strong></p>
+                    <p style={{ fontSize: 'var(--font-size-sm)' }}><strong>{ann.title}</strong></p>
                     <span className="text-muted">{ann.published_by_name || 'Admin'} · {timeAgo(ann.created_at)}</span>
                   </div>
                 </div>
@@ -394,8 +493,10 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>📝 Pending Leave Requests</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/leaves')}>Manage →</button>
+            <h2><ClipboardList size={18} /> Pending Leave Requests</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/leaves')}>
+              Manage <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             {lists.pendingLeaves?.length > 0 ? (
@@ -406,23 +507,25 @@ const Dashboard = () => {
                     <h4>{leave.student_name}</h4>
                     <p>{leave.leave_type} · {formatDate(leave.from_date)} → {formatDate(leave.to_date)}</p>
                   </div>
-                  <span className="badge badge-inactive">{leave.days} day(s)</span>
+                  <span className="badge badge-warning">{leave.days}d</span>
                 </div>
               ))
             ) : (
-              <p className="muted-center">No pending leave requests 🎉</p>
+              <p className="muted-center">No pending leave requests</p>
             )}
           </div>
         </div>
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>📂 Documents Overview</h2>
-            <button className="btn btn-sm btn-outline" onClick={() => navigate('/documents')}>View All →</button>
+            <h2><FolderOpen size={18} /> Documents Overview</h2>
+            <button className="btn btn-sm btn-outline" onClick={() => navigate('/documents')}>
+              View All <ChevronRight size={14} />
+            </button>
           </div>
           <div className="dashboard-section-body">
             <div className="quick-stat-item">
-              <span className="quick-stat-label">🎫 ID Cards Issued</span>
+              <span className="quick-stat-label">ID Cards Issued</span>
               <span className="quick-stat-value">—</span>
             </div>
             <p className="muted-center" style={{ marginTop: '8px' }}>
@@ -430,14 +533,6 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="dashboard-quick-actions">
-        <button className="btn btn-primary" onClick={() => navigate('/students/add')}>➕ Add Student</button>
-        <button className="btn btn-outline" onClick={() => navigate('/students/import')}>📥 Import Students</button>
-        <button className="btn btn-outline" onClick={() => navigate('/attendance')}>📅 Mark Attendance</button>
-        <button className="btn btn-outline" onClick={() => navigate('/fees')}>💰 Collect Fees</button>
       </div>
     </div>
   );

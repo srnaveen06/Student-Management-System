@@ -1,12 +1,12 @@
 /* ============================================
-   Form Styles
+   Forms — Modern Form Design
    ============================================ */
 .form-container {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   border: 1px solid var(--border);
   padding: var(--space-xl);
 }
@@ -16,6 +16,16 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
+  letter-spacing: -0.01em;
+}
+
+.form-section-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-bottom: 8px;
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .form-grid {
@@ -27,7 +37,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .form-group.full-width {
@@ -36,31 +46,34 @@
 
 .form-label {
   font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .form-label .required {
   color: var(--danger);
+  margin-left: 2px;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   background: var(--bg-secondary);
   transition: var(--transition);
+  line-height: 1.5;
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-bg);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
 }
 
 .form-input::placeholder,
@@ -86,11 +99,19 @@
   font-weight: 500;
 }
 
+.form-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
 .form-actions {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   margin-top: var(--space-lg);
   justify-content: flex-end;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-light);
 }
 
 /* Image Upload */
@@ -101,9 +122,9 @@
 }
 
 .image-preview {
-  width: 120px;
-  height: 120px;
-  border-radius: var(--radius-lg);
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-xl);
   border: 2px dashed var(--border);
   display: flex;
   align-items: center;
@@ -111,6 +132,11 @@
   overflow: hidden;
   background: var(--bg-primary);
   flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.image-preview:hover {
+  border-color: var(--primary);
 }
 
 .image-preview img {
@@ -124,14 +150,16 @@
   color: var(--text-muted);
 }
 
-.image-preview-placeholder .icon {
-  font-size: 32px;
-  display: block;
+.image-preview-placeholder svg {
+  width: 28px;
+  height: 28px;
   margin-bottom: 4px;
+  opacity: 0.5;
 }
 
 .image-preview-placeholder span {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-2xs);
+  display: block;
 }
 
 .image-upload-btn {
@@ -147,15 +175,34 @@
 /* Filter Bar */
 .filter-bar {
   display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-lg);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
   flex-wrap: wrap;
   align-items: center;
 }
 
 .filter-bar .form-select,
 .filter-bar .form-input {
-  min-width: 150px;
+  min-width: 140px;
+  padding: 8px 12px;
+  font-size: var(--font-size-sm);
+}
+
+.filter-bar-wrap {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.filter-bar-wrap .search-box {
+  margin-bottom: 0;
 }
 
 .search-box {
@@ -166,10 +213,10 @@
 
 .search-box input {
   width: 100%;
-  padding: 10px 14px 10px 40px;
+  padding: 8px 12px 8px 36px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   background: var(--bg-secondary);
   transition: var(--transition);
@@ -177,62 +224,63 @@
 
 .search-box input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-bg);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .search-box .search-icon {
   position: absolute;
-  left: 14px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
+  width: 16px;
+  height: 16px;
 }
 
-/* ============================================
-   Add Student Tabs
-   ============================================ */
+/* Add Student Tabs */
 .add-student-tabs {
   display: flex;
-  gap: var(--space-sm);
+  gap: 2px;
   flex-wrap: wrap;
   margin-bottom: var(--space-lg);
-  border-bottom: 2px solid var(--border);
-  padding-bottom: 0;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: 4px;
 }
 
 .add-student-tab {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background: var(--bg-primary);
-  color: var(--text-muted);
-  font-weight: 600;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: var(--transition);
 }
 
 .add-student-tab:hover {
-  color: var(--primary);
+  color: var(--text-primary);
+  background: var(--bg-secondary);
 }
 
 .add-student-tab.active {
   background: var(--bg-secondary);
   color: var(--primary);
-  border-color: var(--primary);
-  box-shadow: 0 -2px 0 var(--primary) inset;
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
 }
 
 .add-student-tab-icon {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
 }
 
 .add-student-tab-panels {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -247,7 +295,7 @@
   border: 1px solid var(--warning-light);
   background: var(--warning-light);
   color: var(--warning);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-md);
 }
@@ -277,7 +325,7 @@
   overflow-y: auto;
   padding: var(--space-sm);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--bg-primary);
 }
 
@@ -287,10 +335,10 @@
   gap: 10px;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   background: var(--bg-secondary);
   cursor: pointer;
-  transition: background var(--transition), border-color var(--transition);
+  transition: var(--transition);
   min-width: 0;
 }
 
@@ -301,11 +349,14 @@
 
 .tab-check-item > span {
   min-width: 0;
+  font-size: var(--font-size-sm);
 }
 
 .tab-check-item input[type="checkbox"] {
   margin-top: 3px;
   accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
 }
 
 .tab-muted {
@@ -317,7 +368,7 @@
   margin-top: var(--space-md);
   padding: var(--space-md);
   border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--bg-primary);
 }
 
@@ -339,7 +390,7 @@
   margin-top: var(--space-md);
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--bg-primary);
   display: flex;
   flex-direction: column;
@@ -356,7 +407,7 @@
   justify-content: space-between;
   gap: var(--space-sm);
   padding: 8px 10px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   background: var(--primary-bg);
   font-size: var(--font-size-sm);
 }
@@ -365,7 +416,7 @@
   border: 1px solid var(--danger-light);
   color: var(--danger);
   background: transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   padding: 4px 10px;
   font-size: var(--font-size-xs);
   cursor: pointer;

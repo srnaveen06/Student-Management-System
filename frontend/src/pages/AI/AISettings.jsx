@@ -3,6 +3,7 @@ import { InlineLoader } from '../../components/Loader/Loader';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
 import { useAI } from '../../context/AIContext';
+import { Save } from 'lucide-react';
 
 const AISettings = () => {
   const { toast } = useToast();
@@ -62,7 +63,7 @@ const AISettings = () => {
           <p>Configure the AI-powered intelligence platform.</p>
         </div>
         <button className="btn btn-primary btn-sm" onClick={save} disabled={saving}>
-          {saving ? 'Saving…' : '💾 Save Settings'}
+          {saving ? 'Saving…' : <><Save size={16} /> Save Settings</>}
         </button>
       </div>
 

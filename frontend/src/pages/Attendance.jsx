@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RefreshCw, CheckCircle, X, Save, User, PartyPopper } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Pagination from '../components/Pagination/Pagination';
 import attendanceApi from '../services/attendanceApi';
 import studentApi from '../services/studentApi';
+import courseApi from '../services/courseApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate, getInitials } from '../utils/format';
 import { hasRole } from '../utils/auth';
@@ -52,7 +54,7 @@ const Attendance = () => {
     try {
       const [bRes, subRes] = await Promise.all([
         studentApi.getBranches(),
-        studentApi.getSubjectOptions().catch(() => ({ data: [] }))
+        courseApi.getSubjectOptions().catch(() => ({ data: [] }))
       ]);
       if (bRes.success) setBranches(bRes.data);
       if (subRes.data) setSubjects(subRes.data);
@@ -153,16 +155,16 @@ const Attendance = () => {
                 .map(s => <option key={s.id} value={s.id}>{s.subject_name} ({s.subject_code})</option>)}
             </select>
             <button className="btn btn-outline btn-sm" onClick={() => { setMarking(prev => ({ ...prev, students: [], loaded: false })); fetchMarkingStudents(); }}>
-              🔄 Load Students
+              <RefreshCw size={16} /> Load Students
             </button>
           </div>
 
           {canEdit && markingReady && marking.loaded && marking.students.length > 0 && (
             <div className="bulk-bar">
               <span>Set all:</span>
-              <button className="btn btn-sm btn-success" onClick={() => setAll('Present')}>✅ All Present</button>
-              <button className="btn btn-sm btn-danger" onClick={() => setAll('Absent')}>❌ All Absent</button>
-              <button className="btn btn-sm btn-primary" onClick={saveAttendance}>💾 Save Attendance</button>
+              <button className="btn btn-sm btn-success" onClick={() => setAll('Present')}><CheckCircle size={16} /> All Present</button>
+              <button className="btn btn-sm btn-danger" onClick={() => setAll('Absent')}><X size={16} /> All Absent</button>
+              <button className="btn btn-sm btn-primary" onClick={saveAttendance}><Save size={16} /> Save Attendance</button>
             </div>
           )}
 
@@ -203,11 +205,11 @@ const Attendance = () => {
                               <button
                                 className={`toggle-btn ${marking.records[s.id] === 'Present' ? 'present' : ''}`}
                                 onClick={() => setStatus(s.id, 'Present')}
-                              >✅ Present</button>
+                              ><CheckCircle size={16} /> Present</button>
                               <button
                                 className={`toggle-btn ${marking.records[s.id] === 'Absent' ? 'absent' : ''}`}
                                 onClick={() => setStatus(s.id, 'Absent')}
-                              >❌ Absent</button>
+                              ><X size={16} /> Absent</button>
                             </div>
                           ) : (
                             <span className={`badge ${s.current_status === 'Present' ? 'badge-active' : 'badge-inactive'}`}>
@@ -307,14 +309,14 @@ const Attendance = () => {
                       <span className={`badge ${Number(s.percentage) < 60 ? 'badge-inactive' : 'badge-warning'}`}>{s.percentage}%</span>
                     </td>
                     <td>
-                      <button className="btn btn-sm btn-outline" onClick={() => navigate(`/students/profile/${s.id}`)}>👤 Profile</button>
+                      <button className="btn btn-sm btn-outline" onClick={() => navigate(`/students/profile/${s.id}`)}><User size={16} /> Profile</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          {low.length === 0 && <p className="muted-center">No students below the threshold 🎉</p>}
+          {low.length === 0 && <p className="muted-center">No students below the threshold <PartyPopper size={16} /></p>}
         </div>
       )}
     </div>

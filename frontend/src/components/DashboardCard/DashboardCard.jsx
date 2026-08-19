@@ -1,7 +1,6 @@
 import React from 'react';
 
-// Reusable dashboard stat card component
-const DashboardCard = ({ icon, iconColor, title, value }) => {
+const DashboardCard = ({ icon, iconColor, title, value, trend, trendDirection }) => {
   return (
     <div className="stat-card">
       <div className={`stat-icon ${iconColor}`}>
@@ -10,6 +9,11 @@ const DashboardCard = ({ icon, iconColor, title, value }) => {
       <div className="stat-info">
         <h3>{value}</h3>
         <p>{title}</p>
+        {trend && (
+          <span className={`stat-trend ${trendDirection || 'up'}`}>
+            {trend}
+          </span>
+        )}
       </div>
     </div>
   );

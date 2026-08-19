@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authApi from '../services/authApi';
 import { useToast } from '../context/ToastContext';
+import { LogIn, AlertCircle } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ const Login = () => {
     setError('');
   };
 
-  // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -30,7 +30,6 @@ const Login = () => {
       const response = await authApi.login(formData.username, formData.password);
 
       if (response.success) {
-        // Save token and admin info to localStorage
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('admin', JSON.stringify(response.data.admin));
 
@@ -50,132 +49,201 @@ const Login = () => {
     <div style={{
       minHeight: '100vh',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
       background: 'var(--bg-primary)',
-      padding: '20px'
     }}>
+      {/* Left branding panel */}
       <div style={{
-        width: '100%',
-        maxWidth: '420px',
-        background: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-lg)',
-        border: '1px solid var(--border)',
-        padding: '40px',
-        animation: 'cardAnimate 0.5s ease forwards'
-      }}>
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        flex: 1,
+        background: 'linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '48px',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'none',
+      }} className="login-branding">
+        <div style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-10%',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+          borderRadius: '50%',
+        }} />
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          textAlign: 'center',
+          color: 'white',
+        }}>
           <div style={{
-            width: '64px',
-            height: '64px',
-            background: 'var(--primary)',
-            borderRadius: 'var(--radius-md)',
+            width: '72px',
+            height: '72px',
+            background: 'rgba(255,255,255,0.2)',
+            borderRadius: '20px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '28px',
-            fontWeight: '700',
-            color: 'white',
-            margin: '0 auto 16px'
-          }}>
-            S
-          </div>
-          <h1 style={{
-            fontSize: '24px',
-            fontWeight: '700',
-            color: 'var(--text-primary)',
-            marginBottom: '4px'
-          }}>
-            Student Management
+            fontSize: '32px',
+            fontWeight: '800',
+            marginBottom: '24px',
+            backdropFilter: 'blur(4px)',
+            margin: '0 auto 24px',
+          }}>S</div>
+          <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.02em' }}>
+            Student Management System
           </h1>
-          <p style={{
-            color: 'var(--text-secondary)',
-            fontSize: '14px'
-          }}>
-            Sign in to your admin account
+          <p style={{ fontSize: '16px', opacity: 0.85, maxWidth: '400px', lineHeight: 1.6 }}>
+            Professional College ERP for managing students, attendance, fees, examinations, and more.
           </p>
         </div>
+      </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit}>
-          {error && (
+      {/* Right login panel */}
+      <div style={{
+        width: '100%',
+        maxWidth: '480px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '40px',
+      }}>
+        <div style={{ width: '100%', maxWidth: '360px' }}>
+          {/* Logo (mobile) */}
+          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
             <div style={{
-              padding: '12px',
-              borderRadius: 'var(--radius)',
-              background: 'var(--danger-light)',
-              color: 'var(--danger)',
-              fontSize: '13px',
-              fontWeight: '500',
-              marginBottom: '16px'
+              width: '52px',
+              height: '52px',
+              background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
+              borderRadius: 'var(--radius-xl)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '22px',
+              fontWeight: '800',
+              color: 'white',
+              margin: '0 auto 16px',
+              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
             }}>
-              ⚠ {error}
+              S
             </div>
-          )}
-
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              fontWeight: '600',
+            <h1 style={{
+              fontSize: '22px',
+              fontWeight: '700',
               color: 'var(--text-primary)',
-              marginBottom: '6px'
+              marginBottom: '4px',
+              letterSpacing: '-0.02em',
             }}>
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              className="form-input"
-              style={{ width: '100%' }}
-              placeholder="Enter username"
-              value={formData.username}
-              onChange={handleChange}
-              autoComplete="username"
-            />
+              Welcome back
+            </h1>
+            <p style={{
+              color: 'var(--text-secondary)',
+              fontSize: '14px',
+            }}>
+              Sign in to your account to continue
+            </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '6px'
-            }}>
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="form-input"
-              style={{ width: '100%' }}
-              placeholder="Enter password"
-              value={formData.password}
-              onChange={handleChange}
-              autoComplete="current-password"
-            />
-          </div>
+          {/* Login Form */}
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 14px',
+                borderRadius: 'var(--radius-lg)',
+                background: 'var(--danger-light)',
+                color: 'var(--danger)',
+                fontSize: '13px',
+                fontWeight: '500',
+                marginBottom: '20px',
+              }}>
+                <AlertCircle size={16} />
+                {error}
+              </div>
+            )}
 
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
-            disabled={loading}
-          >
-            {loading ? '⏳ Signing in...' : '🚀 Sign In'}
-          </button>
-        </form>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '500',
+                color: 'var(--text-secondary)',
+                marginBottom: '6px',
+              }}>
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                className="form-input"
+                style={{ width: '100%' }}
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={handleChange}
+                autoComplete="username"
+                autoFocus
+              />
+            </div>
 
-        <p style={{
-          textAlign: 'center',
-          marginTop: '20px',
-          fontSize: '12px',
-          color: 'var(--text-muted)'
-        }}>
-          Default credentials: admin / admin123
-        </p>
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '500',
+                color: 'var(--text-secondary)',
+                marginBottom: '6px',
+              }}>
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                className="form-input"
+                style={{ width: '100%' }}
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                autoComplete="current-password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg"
+              style={{ width: '100%', justifyContent: 'center' }}
+              disabled={loading}
+            >
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} />
+                  Signing in...
+                </span>
+              ) : (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <LogIn size={18} />
+                  Sign In
+                </span>
+              )}
+            </button>
+          </form>
+
+          <p style={{
+            textAlign: 'center',
+            marginTop: '24px',
+            fontSize: '12px',
+            color: 'var(--text-muted)',
+            padding: '10px',
+            background: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-lg)',
+          }}>
+            Default credentials: <strong>admin</strong> / <strong>admin123</strong>
+          </p>
+        </div>
       </div>
     </div>
   );

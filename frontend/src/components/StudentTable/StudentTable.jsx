@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Eye, Edit, Trash2, Inbox } from 'lucide-react';
 
-// Student data table with photo, info, status, fee info, bulk selection, and action buttons
 const StudentTable = ({
   students,
   onDelete,
@@ -22,7 +22,9 @@ const StudentTable = ({
   if (!students || students.length === 0) {
     return (
       <div className="empty-state">
-        <div className="empty-state-icon">📭</div>
+        <div className="empty-state-icon">
+          <Inbox size={28} />
+        </div>
         <h3>No Students Found</h3>
         <p>Try adjusting your search or filter criteria</p>
       </div>
@@ -53,13 +55,12 @@ const StudentTable = ({
                 />
               </th>
             )}
-            <th>Photo</th>
-            <th>Student ID</th>
-            <th>Name</th>
+            <th>Student</th>
+            <th>ID</th>
             <th>Branch</th>
             <th>Institute</th>
-            <th>Semester</th>
-            <th>Fee Status</th>
+            <th>Sem</th>
+            <th>Fee</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -79,20 +80,31 @@ const StudentTable = ({
               )}
 
               <td>
-                <div className="student-avatar">
-                  {student.image ? (
-                    <img
-                      src={`${API_URL}/uploads/${student.image}`}
-                      alt={student.name}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <span style={{ display: student.image ? 'none' : 'flex' }}>
-                    {getInitials(student.name)}
-                  </span>
+                <div className="student-cell">
+                  <div className="student-avatar">
+                    {student.image ? (
+                      <img
+                        src={`${API_URL}/uploads/${student.image}`}
+                        alt={student.name}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <span style={{ display: student.image ? 'none' : 'flex' }}>
+                      {getInitials(student.name)}
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      className="student-name student-name-link"
+                      onClick={() => (onProfile ? onProfile(student) : onView(student))}
+                    >
+                      {student.name}
+                    </button>
+                    <div className="student-id">{student.email || student.student_id}</div>
+                  </div>
                 </div>
               </td>
 
@@ -100,17 +112,8 @@ const StudentTable = ({
                 <span className="student-id">{student.student_id}</span>
               </td>
 
-              <td>
-                <button
-                  className="student-name student-name-link"
-                  onClick={() => (onProfile ? onProfile(student) : onView(student))}
-                >
-                  {student.name}
-                </button>
-              </td>
-
               <td>{student.branch}</td>
-              <td>{student.institute}</td>
+              <td>{student.institute || '—'}</td>
               <td>Sem {student.semester}</td>
 
               <td>{feeBadge(student)}</td>
@@ -128,7 +131,7 @@ const StudentTable = ({
                     title="View Details"
                     onClick={() => onView(student)}
                   >
-                    👁
+                    <Eye size={16} />
                   </button>
                   {canManage && (
                     <>
@@ -137,14 +140,14 @@ const StudentTable = ({
                         title="Edit Student"
                         onClick={() => navigate(`/students/edit/${student.id}`)}
                       >
-                        ✏
+                        <Edit size={16} />
                       </button>
                       <button
                         className="action-btn delete"
                         title="Delete Student"
                         onClick={() => onDelete(student)}
                       >
-                        🗑
+                        <Trash2 size={16} />
                       </button>
                     </>
                   )}

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import idCardApi from '../services/idCardApi';
 import { formatDate, getInitials } from '../utils/format';
 import { InlineLoader } from '../components/Loader/Loader';
+import { Building2, X, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -29,7 +30,7 @@ const VerifyIdCard = () => {
     <div className="idcard-preview">
       <div className="idcard-header">
         <div>
-          <h2>🏛️ Student ID</h2>
+          <h2><Building2 size={20} /> Student ID</h2>
           <p>Verified College Identity Card</p>
         </div>
         <div style={{ textAlign: 'right' }}>
@@ -63,13 +64,13 @@ const VerifyIdCard = () => {
         </div>
       ) : state.error ? (
         <>
-          <div className="verification-banner error">✖ {state.error}</div>
+          <div className="verification-banner error"><X size={16} /> {state.error}</div>
           <Link to="/" style={{ marginTop: '16px' }}>← Back to portal</Link>
         </>
       ) : (
         <>
           <div className={`verification-banner ${state.card.status === 'Active' ? 'success' : 'error'}`}>
-            {state.card.status === 'Active' ? '✔ This is a valid, active ID card' : `⚠ Card status: ${state.card.status}`}
+            {state.card.status === 'Active' ? <><CheckCircle size={16} /> This is a valid, active ID card</> : <><AlertTriangle size={16} /> Card status: {state.card.status}</>}
           </div>
           {renderCard(state.card)}
         </>

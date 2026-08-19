@@ -4,6 +4,7 @@ import aiApi from '../../services/aiApi';
 import studentApi from '../../services/studentApi';
 import { useToast } from '../../context/ToastContext';
 import { formatDateTime } from '../../utils/format';
+import { FileText, RefreshCw } from 'lucide-react';
 
 const DOC_TYPES = [
   { value: 'marksheet', label: 'Marksheet' },
@@ -170,7 +171,7 @@ const AIDocuments = () => {
               <p className="form-hint">CSV / text / JSON are parsed automatically. Images & PDFs are queued for manual review.</p>
             </div>
             <button className="btn btn-primary" onClick={handleExtract} disabled={extracting}>
-              {extracting ? 'Extracting…' : '📄 Extract Document'}
+              {extracting ? 'Extracting…' : <><FileText size={16} /> Extract Document</>}
             </button>
           </div>
 
@@ -191,7 +192,7 @@ const AIDocuments = () => {
         <div className="dashboard-section" style={{ gridColumn: 'span 2' }}>
           <div className="dashboard-section-header">
             <h2>Recent Extractions</h2>
-            <button className="btn btn-outline btn-sm" onClick={loadExtractions}>↺ Refresh</button>
+            <button className="btn btn-outline btn-sm" onClick={loadExtractions}><RefreshCw size={14} /> Refresh</button>
           </div>
           <div className="dashboard-section-body">
             {loadingList ? <InlineLoader /> : extractions.length === 0 ? (

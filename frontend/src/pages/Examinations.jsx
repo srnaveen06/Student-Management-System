@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Plus, School, BookOpen, CalendarDays, Target, PenLine, Edit, Trash2, Save } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 import examApi from '../services/examApi';
@@ -200,7 +201,7 @@ const Examinations = () => {
         </div>
         {canEdit && (
           <button className="btn btn-primary btn-sm" onClick={() => setExamModal({ open: true, editing: null, form: emptyExam })}>
-            ➕ Create Exam
+            <Plus size={16} /> Create Exam
           </button>
         )}
       </div>
@@ -242,17 +243,17 @@ const Examinations = () => {
                     </span>
                   </div>
                   <div className="course-card-meta">
-                    <span>🏫 {exam.branch || '—'}</span>
-                    <span>📚 Sem {exam.semester}</span>
-                    <span>📅 {formatDate(exam.exam_date)}</span>
-                    <span>🎯 Max {exam.max_marks}</span>
+                    <span><School size={14} /> {exam.branch || '—'}</span>
+                    <span><BookOpen size={14} /> Sem {exam.semester}</span>
+                    <span><CalendarDays size={14} /> {formatDate(exam.exam_date)}</span>
+                    <span><Target size={14} /> Max {exam.max_marks}</span>
                   </div>
                   <div className="course-card-actions">
                     {canEdit && (
                       <>
-                        <button className="btn btn-sm btn-primary" onClick={() => openEntry(exam)}>✍ Enter Marks</button>
-                        <button className="btn btn-sm btn-outline" onClick={() => setExamModal({ open: true, editing: exam, form: { ...emptyExam, ...exam } })}>✏ Edit</button>
-                        <button className="btn btn-sm btn-danger" onClick={() => deleteExam(exam)}>🗑 Delete</button>
+                        <button className="btn btn-sm btn-primary" onClick={() => openEntry(exam)}><PenLine size={16} /> Enter Marks</button>
+                        <button className="btn btn-sm btn-outline" onClick={() => setExamModal({ open: true, editing: exam, form: { ...emptyExam, ...exam } })}><Edit size={16} /> Edit</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => deleteExam(exam)}><Trash2 size={16} /> Delete</button>
                       </>
                     )}
                     {!canEdit && <span className="text-muted">Read only</span>}
@@ -271,7 +272,7 @@ const Examinations = () => {
             <span>
               {entry.exam.exam_name} · {entry.exam.subject_name} · Sem {entry.exam.semester} · Max {entry.exam.max_marks} marks · {entry.rows.length} students
             </span>
-            <button className="btn btn-sm btn-success" onClick={saveMarks}>💾 Save All Marks</button>
+            <button className="btn btn-sm btn-success" onClick={saveMarks}><Save size={16} /> Save All Marks</button>
             <button className="btn btn-sm btn-outline" onClick={() => setTab('exams')}>← Back</button>
           </div>
 

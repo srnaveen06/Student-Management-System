@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User, Palette, Sun, Moon, Lock, Clock, LogOut, Building2, Save, Users, Plus, Trash2 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
 import Modal from '../components/Modal/Modal';
@@ -146,7 +147,7 @@ const Settings = () => {
       <div className="settings-grid">
         {/* Profile */}
         <div className="dashboard-section">
-          <div className="dashboard-section-header"><h2>👤 Profile</h2></div>
+          <div className="dashboard-section-header"><h2><User size={18} /> Profile</h2></div>
           <div className="dashboard-section-body">
             <div className="profile-card">
               <div className="profile-avatar">
@@ -174,16 +175,16 @@ const Settings = () => {
 
         {/* Appearance */}
         <div className="dashboard-section">
-          <div className="dashboard-section-header"><h2>🎨 Appearance</h2></div>
+          <div className="dashboard-section-header"><h2><Palette size={18} /> Appearance</h2></div>
           <div className="dashboard-section-body">
             <p className="settings-desc">Choose how the application looks for you.</p>
             <div className="theme-options">
               <button className={`theme-option ${theme === 'light' ? 'active' : ''}`} onClick={() => theme !== 'light' && toggleTheme()}>
-                <span className="theme-option-icon">☀️</span>
+                <span className="theme-option-icon"><Sun size={18} /></span>
                 <span className="theme-option-label">Light Mode</span>
               </button>
               <button className={`theme-option ${theme === 'dark' ? 'active' : ''}`} onClick={() => theme !== 'dark' && toggleTheme()}>
-                <span className="theme-option-icon">🌙</span>
+                <span className="theme-option-icon"><Moon size={18} /></span>
                 <span className="theme-option-label">Dark Mode</span>
               </button>
             </div>
@@ -192,7 +193,7 @@ const Settings = () => {
 
         {/* Change Password */}
         <div className="dashboard-section">
-          <div className="dashboard-section-header"><h2>🔒 Change Password</h2></div>
+          <div className="dashboard-section-header"><h2><Lock size={18} /> Change Password</h2></div>
           <div className="dashboard-section-body">
             <form onSubmit={handleChangePassword} className="settings-form">
               <div className="form-group">
@@ -211,7 +212,7 @@ const Settings = () => {
                 {errors.confirmPassword && <span className="form-error">{errors.confirmPassword}</span>}
               </div>
               <button type="submit" className="btn btn-primary" style={{ justifyContent: 'center', marginTop: 'var(--space-md)' }} disabled={loading}>
-                {loading ? '⏳ Updating...' : 'Update Password'}
+                {loading ? <><Clock size={16} /> Updating...</> : 'Update Password'}
               </button>
             </form>
           </div>
@@ -219,7 +220,7 @@ const Settings = () => {
 
         {/* Account */}
         <div className="dashboard-section">
-          <div className="dashboard-section-header"><h2>🚪 Account</h2></div>
+          <div className="dashboard-section-header"><h2><LogOut size={18} /> Account</h2></div>
           <div className="dashboard-section-body">
             <p className="settings-desc">Sign out of your account. You will need to log in again.</p>
             <button className="btn btn-danger" onClick={handleLogout} style={{ justifyContent: 'center' }}>Logout</button>
@@ -231,9 +232,9 @@ const Settings = () => {
       {canEditSettings && (
         <div className="dashboard-section" style={{ marginTop: 'var(--space-lg)' }}>
           <div className="dashboard-section-header">
-            <h2>🏛 College Settings</h2>
+            <h2><Building2 size={18} /> College Settings</h2>
             <button className="btn btn-primary btn-sm" onClick={handleSaveSettings} disabled={savingSettings}>
-              {savingSettings ? '⏳ Saving...' : '💾 Save Settings'}
+              {savingSettings ? <><Clock size={16} /> Saving...</> : <><Save size={16} /> Save Settings</>}
             </button>
           </div>
           <div className="dashboard-section-body">
@@ -291,9 +292,9 @@ const Settings = () => {
       {isSuperAdmin && (
         <div className="dashboard-section" style={{ marginTop: 'var(--space-lg)' }}>
           <div className="dashboard-section-header">
-            <h2>👥 User Management</h2>
+            <h2><Users size={18} /> User Management</h2>
             <button className="btn btn-primary btn-sm" onClick={() => setUserModal({ open: true, form: { username: '', password: '', role: 'teacher', name: '', email: '' } })}>
-              ➕ Add User
+              <Plus size={16} /> Add User
             </button>
           </div>
           <div className="dashboard-section-body">
@@ -328,7 +329,7 @@ const Settings = () => {
                       <td>{user.last_login ? formatDateTime(user.last_login) : 'Never'}</td>
                       <td>
                         {user.username !== admin?.username && (
-                          <button className="btn btn-sm btn-danger" onClick={() => deleteUser(user)}>🗑</button>
+                          <button className="btn btn-sm btn-danger" onClick={() => deleteUser(user)}><Trash2 size={16} /></button>
                         )}
                       </td>
                     </tr>

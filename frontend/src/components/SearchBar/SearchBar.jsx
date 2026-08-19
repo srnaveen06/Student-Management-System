@@ -1,10 +1,10 @@
 import React from 'react';
+import { Search } from 'lucide-react';
 
-// Search input with icon
 const SearchBar = ({ value, onChange, placeholder }) => {
   return (
     <div className="search-box">
-      <span className="search-icon">🔍</span>
+      <Search className="search-icon" size={16} />
       <input
         type="text"
         value={value}

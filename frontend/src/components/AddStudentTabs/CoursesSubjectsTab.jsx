@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BookOpen, Plus, X } from 'lucide-react';
 import courseApi from '../../services/courseApi';
 
 // Assign existing courses/subjects to the student and/or create new ones inline.
@@ -119,7 +120,7 @@ const CoursesSubjectsTab = ({ value = { courses: [], subjects: [] }, onChange, b
 
   return (
     <div className="form-container">
-      <h2 className="form-title">📚 Courses & Subjects</h2>
+      <h2 className="form-title"><BookOpen size={20} /> Courses & Subjects</h2>
       <p className="tab-hint">
         Assign existing courses/subjects to this student, or create new ones inline.
         New ones will be created when you save the student.
@@ -154,7 +155,7 @@ const CoursesSubjectsTab = ({ value = { courses: [], subjects: [] }, onChange, b
           </div>
 
           <div className="tab-inline-form">
-            <h4 className="tab-inline-title">➕ Add New Course</h4>
+            <h4 className="tab-inline-title"><Plus size={16} /> Add New Course</h4>
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">Course Name <span className="required">*</span></label>
@@ -197,7 +198,7 @@ const CoursesSubjectsTab = ({ value = { courses: [], subjects: [] }, onChange, b
               {extraCourses.map((c, i) => (
                 <div className="tab-row" key={i}>
                   <span><strong>{c.course_name}</strong> ({c.course_code}) — new</span>
-                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeNewCourse(i)}>✕</button>
+                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeNewCourse(i)}><X size={14} /></button>
                 </div>
               ))}
             </div>
@@ -230,7 +231,7 @@ const CoursesSubjectsTab = ({ value = { courses: [], subjects: [] }, onChange, b
           </div>
 
           <div className="tab-inline-form">
-            <h4 className="tab-inline-title">➕ Add New Subject</h4>
+            <h4 className="tab-inline-title"><Plus size={16} /> Add New Subject</h4>
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">Subject Name <span className="required">*</span></label>
@@ -283,7 +284,7 @@ const CoursesSubjectsTab = ({ value = { courses: [], subjects: [] }, onChange, b
               {extraSubjects.map((s, i) => (
                 <div className="tab-row" key={i}>
                   <span><strong>{s.subject_name}</strong> ({s.subject_code}) — new</span>
-                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeNewSubject(i)}>✕</button>
+                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeNewSubject(i)}><X size={14} /></button>
                 </div>
               ))}
             </div>

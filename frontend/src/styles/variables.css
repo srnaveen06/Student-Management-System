@@ -1,55 +1,73 @@
 /* ============================================
-   CSS Variables — Design Tokens
-   Central place for all colors, fonts, spacing
+   Design Tokens — Global Variables
+   Modern SaaS / College ERP Design System
    ============================================ */
 
 :root {
   /* Primary Colors */
   --primary: #2563EB;
   --primary-light: #3B82F6;
+  --primary-lighter: #60A5FA;
   --primary-dark: #1D4ED8;
   --primary-bg: #EFF6FF;
+  --primary-bg-hover: #DBEAFE;
 
   /* Status Colors */
   --success: #16A34A;
   --success-light: #DCFCE7;
+  --success-dark: #15803D;
   --danger: #DC2626;
   --danger-light: #FEE2E2;
+  --danger-dark: #B91C1C;
   --warning: #D97706;
   --warning-light: #FEF3C7;
+  --warning-dark: #B45309;
   --info: #0891B2;
   --info-light: #CFFAFE;
+  --info-dark: #0E7490;
 
   /* Neutrals */
   --bg-primary: #F8FAFC;
   --bg-secondary: #FFFFFF;
-  --bg-sidebar: #1E293B;
-  --bg-sidebar-hover: #334155;
-  --bg-sidebar-active: #2563EB;
+  --bg-tertiary: #F1F5F9;
+  --bg-sidebar: #0F172A;
+  --bg-sidebar-hover: #1E293B;
+  --bg-sidebar-active: rgba(59, 130, 246, 0.15);
+  --bg-hover: rgba(0, 0, 0, 0.02);
+  [data-theme="dark"] & { --bg-hover: rgba(255, 255, 255, 0.03); }
 
   /* Text Colors */
-  --text-primary: #1E293B;
+  --text-primary: #0F172A;
   --text-secondary: #64748B;
   --text-muted: #94A3B8;
   --text-white: #FFFFFF;
-  --text-sidebar: #CBD5E1;
+  --text-sidebar: #94A3B8;
+  --text-sidebar-active: #FFFFFF;
+  --text-sidebar-hover: #E2E8F0;
 
   /* Borders */
   --border: #E2E8F0;
+  --border-light: #F1F5F9;
   --border-focus: #2563EB;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  /* Shadows — more refined */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 
   /* Border Radius */
+  --radius-xs: 4px;
   --radius-sm: 6px;
   --radius: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
   --radius-full: 9999px;
 
   /* Spacing */
@@ -59,26 +77,43 @@
   --space-lg: 24px;
   --space-xl: 32px;
   --space-2xl: 48px;
+  --space-3xl: 64px;
 
   /* Font */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-size-2xs: 11px;
   --font-size-xs: 12px;
   --font-size-sm: 13px;
   --font-size-base: 14px;
   --font-size-md: 15px;
-  --font-size-lg: 18px;
-  --font-size-xl: 20px;
-  --font-size-2xl: 24px;
-  --font-size-3xl: 30px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Layout */
-  --sidebar-width: 250px;
-  --sidebar-collapsed: 70px;
-  --navbar-height: 65px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --navbar-height: 64px;
 
   /* Transitions */
-  --transition: all 0.2s ease;
-  --transition-slow: all 0.3s ease;
+  --transition: all 0.15s ease;
+  --transition-base: all 0.2s ease;
+  --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Z-indices */
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-sidebar: 200;
+  --z-overlay: 300;
+  --z-modal: 1000;
+  --z-toast: 10000;
 }
 
 /* ============================================
@@ -87,16 +122,26 @@
 [data-theme="dark"] {
   --bg-primary: #0F172A;
   --bg-secondary: #1E293B;
-  --bg-sidebar: #0F172A;
+  --bg-tertiary: #1A2332;
+  --bg-sidebar: #0B1120;
+  --bg-sidebar-hover: #1E293B;
+  --bg-sidebar-active: rgba(59, 130, 246, 0.2);
 
   --text-primary: #F1F5F9;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
+  --text-sidebar: #64748B;
+  --text-sidebar-hover: #E2E8F0;
 
-  --border: #334155;
+  --border: #1E293B;
+  --border-light: #1E293B;
+  --border-focus: #3B82F6;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
 }

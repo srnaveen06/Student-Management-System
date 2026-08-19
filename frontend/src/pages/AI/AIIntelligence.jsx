@@ -6,6 +6,7 @@ import { useToast } from '../../context/ToastContext';
 import { formatDate, formatCurrency } from '../../utils/format';
 import { riskClass, riskColor, severityClass, intentLabel, formatNumber } from '../../utils/ai';
 import { isAdmin } from '../../utils/auth';
+import { IndianRupee, AlertTriangle, Bot, Search, Brain, Sparkles, PartyPopper, RefreshCw } from 'lucide-react';
 
 const AIIntelligence = () => {
   const { toast } = useToast();
@@ -115,9 +116,9 @@ const AIIntelligence = () => {
       </div>
 
       <div className="profile-tabs" style={{ marginBottom: '16px' }}>
-        <button className={`profile-tab ${tab === 'fee-risk' ? 'active' : ''}`} onClick={() => setTab('fee-risk')}>💰 Fee Risk</button>
-        <button className={`profile-tab ${tab === 'anomalies' ? 'active' : ''}`} onClick={() => setTab('anomalies')}>⚠️ Anomalies</button>
-        {admin && <button className={`profile-tab ${tab === 'ml' ? 'active' : ''}`} onClick={() => setTab('ml')}>🤖 ML Pipeline</button>}
+        <button className={`profile-tab ${tab === 'fee-risk' ? 'active' : ''}`} onClick={() => setTab('fee-risk')}><IndianRupee size={16} /> Fee Risk</button>
+        <button className={`profile-tab ${tab === 'anomalies' ? 'active' : ''}`} onClick={() => setTab('anomalies')}><AlertTriangle size={16} /> Anomalies</button>
+        {admin && <button className={`profile-tab ${tab === 'ml' ? 'active' : ''}`} onClick={() => setTab('ml')}><Bot size={16} /> ML Pipeline</button>}
       </div>
 
       {tab === 'fee-risk' && (
@@ -134,7 +135,7 @@ const AIIntelligence = () => {
           <div className="dashboard-section">
             <div className="dashboard-section-header">
               <h2>Fee Risk Ranking</h2>
-              <button className="btn btn-outline btn-sm" onClick={loadFeeRisk} disabled={feeLoading}>↺ Refresh</button>
+              <button className="btn btn-outline btn-sm" onClick={loadFeeRisk} disabled={feeLoading}><RefreshCw size={14} /> Refresh</button>
             </div>
             <div className="dashboard-section-body">
               {feeLoading ? <InlineLoader /> : feeRisk?.list?.length ? (
@@ -172,7 +173,7 @@ const AIIntelligence = () => {
           <div className="dashboard-section-header">
             <h2>Detected Anomalies{anomalies ? ` (${anomalies.count})` : ''}</h2>
             <button className="btn btn-outline btn-sm" onClick={loadAnomalies} disabled={anomLoading}>
-              {anomLoading ? 'Scanning…' : '🔍 Run Detection'}
+              {anomLoading ? 'Scanning…' : <><Search size={16} /> Run Detection</>}
             </button>
           </div>
           <div className="dashboard-section-body">
@@ -181,7 +182,7 @@ const AIIntelligence = () => {
                 {anomalies.anomalies.map(a => (
                   <div key={a.id} className={`insight-item warning anomaly-item ${severityClass(a.severity)}`}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <div className="insight-title">⚠️ {intentLabel(a.type)}</div>
+                      <div className="insight-title"><AlertTriangle size={14} /> {intentLabel(a.type)}</div>
                       <span className={`ai-chip ${a.severity >= 3 ? 'ai-chip-danger' : 'ai-chip-warning'}`}>severity {a.severity}</span>
                     </div>
                     <div className="insight-desc">{a.description}</div>
@@ -190,7 +191,7 @@ const AIIntelligence = () => {
                 ))}
               </div>
             ) : anomalies ? (
-              <p className="muted-center">No anomalies detected. 🎉</p>
+              <p className="muted-center">No anomalies detected. <PartyPopper size={14} /></p>
             ) : (
               <p className="muted-center">Click "Run Detection" to scan student records.</p>
             )}
@@ -220,7 +221,7 @@ const AIIntelligence = () => {
                 <p className="muted-center">No active model yet. Train one from the existing student risk data.</p>
               )}
               <button className="btn btn-primary" onClick={train} disabled={training} style={{ marginTop: '8px' }}>
-                {training ? 'Training…' : '🧠 Train Baseline Model'}
+                {training ? 'Training…' : <><Brain size={16} /> Train Baseline Model</>}
               </button>
               <p className="form-hint">Baseline logistic regression trained on rule-derived risk labels. Versions auto-increment.</p>
             </div>
@@ -239,7 +240,7 @@ const AIIntelligence = () => {
                 </div>
                 <div style={{ alignSelf: 'flex-end' }}>
                   <button className="btn btn-primary" onClick={predict} disabled={predictLoading || !predictStudent}>
-                    {predictLoading ? 'Predicting…' : '🔮 Predict Risk'}
+                    {predictLoading ? 'Predicting…' : <><Sparkles size={16} /> Predict Risk</>}
                   </button>
                 </div>
               </div>

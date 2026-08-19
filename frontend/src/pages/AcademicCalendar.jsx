@@ -9,6 +9,7 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate } from '../utils/format';
 import { isAdmin } from '../utils/auth';
+import { CalendarDays, Plus, Edit, Trash2, Eye, Pin, Save, FileText, PartyPopper, Sparkles, MessageCircle, Wrench, Trophy } from 'lucide-react';
 
 const TYPE_COLORS = {
   Exam: 'event-chip-exam',
@@ -21,7 +22,7 @@ const TYPE_COLORS = {
 };
 
 const TYPE_ICONS = {
-  Exam: '📝', Holiday: '🎉', Cultural: '🎭', Seminar: '💬', Workshop: '🛠', Sports: '🏆', Other: '📌'
+  Exam: <FileText size={16} />, Holiday: <PartyPopper size={16} />, Cultural: <Sparkles size={16} />, Seminar: <MessageCircle size={16} />, Workshop: <Wrench size={16} />, Sports: <Trophy size={16} />, Other: <Pin size={16} />
 };
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -211,10 +212,10 @@ const AcademicCalendar = () => {
   return (
     <div>
       <PageHeader
-        title="📅 Academic Calendar"
+        title={<><CalendarDays size={28} /> Academic Calendar</>}
         subtitle="Plan and track college events, exams and holidays"
         actions={canManage && (
-          <button className="btn btn-primary" onClick={openCreate}>➕ Add Event</button>
+          <button className="btn btn-primary" onClick={openCreate}><Plus size={16} /> Add Event</button>
         )}
       />
 
@@ -254,7 +255,7 @@ const AcademicCalendar = () => {
                   title={`${e.title} · ${formatDate(e.start_date)}`}
                   onClick={() => setDetailEvent(e)}
                 >
-                  {TYPE_ICONS[e.event_type] || '📌'} {e.title}
+                  {TYPE_ICONS[e.event_type] || <Pin size={16} />} {e.title}
                 </button>
               ))}
               {dayEvents.length > 3 && (
@@ -303,7 +304,7 @@ const AcademicCalendar = () => {
           </div>
 
           {events.length === 0 ? (
-            <EmptyState icon="🗓" title="No events this month" message="Create an event to get started" />
+            <EmptyState icon={<CalendarDays />} title="No events this month" message="Create an event to get started" />
           ) : (
             <div className="table-wrapper">
               <table className="data-table">
@@ -324,18 +325,18 @@ const AcademicCalendar = () => {
                       <td>
                         <button className="student-name-link" onClick={() => setDetailEvent(e)}>{e.title}</button>
                       </td>
-                      <td><span className="badge badge-info">{TYPE_ICONS[e.event_type] || '📌'} {e.event_type}</span></td>
+                      <td><span className="badge badge-info">{TYPE_ICONS[e.event_type] || <Pin size={16} />} {e.event_type}</span></td>
                       <td>{formatDate(e.start_date)}{e.end_date && e.end_date !== e.start_date ? ` → ${formatDate(e.end_date)}` : ''}</td>
                       <td>{e.branch || 'All'}{e.semester ? ` · Sem ${e.semester}` : ''}</td>
                       <td>{e.location || '—'}</td>
                       <td><span className={`badge ${e.status === 'Active' ? 'badge-active' : 'badge-inactive'}`}>{e.status}</span></td>
                       <td>
                         <div className="action-buttons">
-                          <button className="action-btn view" title="View" onClick={() => setDetailEvent(e)}>👁</button>
+                          <button className="action-btn view" title="View" onClick={() => setDetailEvent(e)}><Eye size={16} /></button>
                           {canManage && (
                             <>
-                              <button className="action-btn edit" title="Edit" onClick={() => openEdit(e)}>✏️</button>
-                              <button className="action-btn delete" title="Delete" onClick={() => handleDelete(e)}>🗑</button>
+                              <button className="action-btn edit" title="Edit" onClick={() => openEdit(e)}><Edit size={16} /></button>
+                              <button className="action-btn delete" title="Delete" onClick={() => handleDelete(e)}><Trash2 size={16} /></button>
                             </>
                           )}
                         </div>
@@ -363,7 +364,7 @@ const AcademicCalendar = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setFormModal({ open: false, editing: null, form: emptyForm() })}>Cancel</button>
-            <button className="btn btn-primary" onClick={handleSave}>{formModal.editing ? '💾 Save Changes' : '➕ Create Event'}</button>
+            <button className="btn btn-primary" onClick={handleSave}>{formModal.editing ? <><Save size={16} /> Save Changes</> : <><Plus size={16} /> Create Event</>}</button>
           </>
         }
       >
@@ -470,8 +471,8 @@ const AcademicCalendar = () => {
             <button className="btn btn-outline" onClick={() => setDetailEvent(null)}>Close</button>
             {canManage && detailEvent && (
               <>
-                <button className="btn btn-primary" onClick={() => { const e = detailEvent; setDetailEvent(null); openEdit(e); }}>✏️ Edit</button>
-                <button className="btn btn-danger" onClick={() => handleDelete(detailEvent)}>🗑 Delete</button>
+                <button className="btn btn-primary" onClick={() => { const e = detailEvent; setDetailEvent(null); openEdit(e); }}><Edit size={16} /> Edit</button>
+                <button className="btn btn-danger" onClick={() => handleDelete(detailEvent)}><Trash2 size={16} /> Delete</button>
               </>
             )}
           </>
@@ -480,7 +481,7 @@ const AcademicCalendar = () => {
         {detailEvent && (
           <>
             <h3 style={{ fontSize: 'var(--font-size-xl)', marginBottom: '8px' }}>
-              {TYPE_ICONS[detailEvent.event_type] || '📌'} {detailEvent.title}
+              {TYPE_ICONS[detailEvent.event_type] || <Pin size={16} />} {detailEvent.title}
             </h3>
             <div className="quick-stat-item">
               <span className="quick-stat-label">Type</span>

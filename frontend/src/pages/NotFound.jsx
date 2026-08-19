@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const NotFound = () => {
       padding: '40px'
     }}>
       <div style={{ animation: 'cardAnimate 0.5s ease forwards' }}>
-        <div style={{ fontSize: '80px', marginBottom: '16px' }}>🔍</div>
+        <div style={{ fontSize: '80px', marginBottom: '16px' }}><Search size={80} /></div>
         <h1 style={{
           fontSize: '64px',
           fontWeight: '800',

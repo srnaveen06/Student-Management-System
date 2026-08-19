@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { CheckCircle, AlertTriangle, XOctagon, Info, Bell, Trash2 } from 'lucide-react';
 import Pagination from '../components/Pagination/Pagination';
 import notificationApi from '../services/notificationApi';
 import { useToast } from '../context/ToastContext';
@@ -6,11 +7,11 @@ import { timeAgo } from '../utils/format';
 
 const NotificationIcon = ({ type }) => {
   switch (type) {
-    case 'success': return '✅';
-    case 'warning': return '⚠️';
-    case 'danger': return '⛔';
-    case 'info': return 'ℹ️';
-    default: return '🔔';
+    case 'success': return <CheckCircle size={18} />;
+    case 'warning': return <AlertTriangle size={18} />;
+    case 'danger': return <XOctagon size={18} />;
+    case 'info': return <Info size={18} />;
+    default: return <Bell size={18} />;
   }
 };
 
@@ -74,7 +75,7 @@ const Notifications = () => {
           <p>{unread > 0 ? `${unread} unread notification(s)` : 'All caught up!'}</p>
         </div>
         <button className="btn btn-outline btn-sm" onClick={markAllRead} disabled={unread === 0}>
-          ✅ Mark All Read
+          <CheckCircle size={16} /> Mark All Read
         </button>
       </div>
 
@@ -97,7 +98,7 @@ const Notifications = () => {
               className="btn btn-icon"
               title="Delete"
               onClick={(e) => { e.stopPropagation(); remove(n); }}
-            >🗑</button>
+            ><Trash2 size={16} /></button>
           </div>
         ))}
       </div>

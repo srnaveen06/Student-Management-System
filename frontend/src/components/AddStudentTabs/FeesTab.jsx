@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IndianRupee } from 'lucide-react';
 
 // Optional fee assignment + initial payment for the student.
 const FeesTab = ({ value = null, onChange, editMode = false }) => {
@@ -42,7 +43,7 @@ const FeesTab = ({ value = null, onChange, editMode = false }) => {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">💰 Fees</h2>
+      <h2 className="form-title"><IndianRupee size={20} /> Fees</h2>
       <p className="tab-hint">
         {editMode
           ? 'Update the fee assignment for this student or record a new payment. Payment history is never deleted.'

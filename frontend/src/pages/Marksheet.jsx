@@ -3,6 +3,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { InlineLoader } from '../components/Loader/Loader';
 import examApi from '../services/examApi';
 import { formatCurrency, getInitials } from '../utils/format';
+import { Printer } from 'lucide-react';
 
 const Marksheet = () => {
   const { studentId } = useParams();
@@ -35,7 +36,7 @@ const Marksheet = () => {
     <div className="marksheet-page">
       <div className="marksheet-actions">
         <button className="btn btn-outline btn-sm" onClick={() => navigate(`/students/profile/${studentId}`)}>← Back to Profile</button>
-        <button className="btn btn-primary btn-sm" onClick={() => window.print()}>🖨 Print</button>
+        <button className="btn btn-primary btn-sm" onClick={() => window.print()}><Printer size={16} /> Print</button>
       </div>
 
       <div className="marksheet">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
 import { intentLabel } from '../../utils/ai';
+import { Sparkles, Eye } from 'lucide-react';
 
 // Natural-language search bar with inline results.
 const NLSearchBar = () => {
@@ -44,7 +45,7 @@ const NLSearchBar = () => {
           onKeyDown={handleKeyDown}
           placeholder="Try: computer science students above 8 cgpa, female electronics students, sem 3 students…"
         />
-        <span className="ai-search-icon">✨</span>
+        <span className="ai-search-icon"><Sparkles size={16} /></span>
       </div>
 
       <div className="ai-search-results">
@@ -75,7 +76,7 @@ const NLSearchBar = () => {
                         <td>{st.cgpa}</td>
                         <td><span className={`badge badge-${String(st.status).toLowerCase()}`}>{st.status}</span></td>
                         <td>
-                          <button className="action-btn view" title="View profile" onClick={() => navigate(`/students/profile/${st.id}`)}>👁</button>
+                          <button className="action-btn view" title="View profile" onClick={() => navigate(`/students/profile/${st.id}`)}><Eye size={14} /></button>
                         </td>
                       </tr>
                     ))}

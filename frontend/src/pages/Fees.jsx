@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Plus, Eye, IndianRupee, Trash2, Edit } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Pagination from '../components/Pagination/Pagination';
 import Modal from '../components/Modal/Modal';
@@ -178,7 +179,7 @@ const Fees = () => {
         {canEdit && (
           <div style={{ display: 'flex', gap: '10px' }}>
             <button className="btn btn-primary btn-sm" onClick={() => setAssignModal({ open: true, studentId: '', totalFees: '', dueDate: '' })}>
-              ➕ Assign Fees
+              <Plus size={16} /> Assign Fees
             </button>
           </div>
         )}
@@ -257,9 +258,9 @@ const Fees = () => {
                       <td>{f.due_date ? formatDate(f.due_date) : '—'}</td>
                       <td>
                         <div className="action-buttons">
-                          <button className="action-btn view" title="View Payments" onClick={() => openView(f)}>👁</button>
+                          <button className="action-btn view" title="View Payments" onClick={() => openView(f)}><Eye size={16} /></button>
                           {canEdit && Number(f.remaining) > 0 && (
-                            <button className="action-btn edit" title="Record Payment" onClick={() => openPayModal(f)}>💰</button>
+                            <button className="action-btn edit" title="Record Payment" onClick={() => openPayModal(f)}><IndianRupee size={16} /></button>
                           )}
                         </div>
                       </td>
@@ -307,7 +308,7 @@ const Fees = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setPayModal({ open: false, fee: null })}>Cancel</button>
-            <button className="btn btn-success" onClick={handlePay}>💰 Save Payment</button>
+            <button className="btn btn-success" onClick={handlePay}><IndianRupee size={16} /> Save Payment</button>
           </>
         }
       >
@@ -350,7 +351,7 @@ const Fees = () => {
         footer={
           <>
             {editModal.payment && (
-              <button className="btn btn-danger" onClick={() => handleDeletePayment(editModal.payment)}>🗑 Delete</button>
+              <button className="btn btn-danger" onClick={() => handleDeletePayment(editModal.payment)}><Trash2 size={16} /> Delete</button>
             )}
             <button className="btn btn-outline" onClick={() => setEditModal({ open: false, payment: null })}>Cancel</button>
             <button className="btn btn-primary" onClick={handleEdit}>Save</button>
@@ -422,7 +423,7 @@ const Fees = () => {
                         <td>{p.method}</td>
                         <td>{formatCurrency(p.amount)}</td>
                         {canEdit && (
-                          <td><button className="btn btn-sm btn-outline" onClick={() => { setViewModal(prev => ({ ...prev, open: false })); openEditModal(p); }}>✏ Edit</button></td>
+                          <td><button className="btn btn-sm btn-outline" onClick={() => { setViewModal(prev => ({ ...prev, open: false })); openEditModal(p); }}><Edit size={16} /> Edit</button></td>
                         )}
                       </tr>
                     ))}

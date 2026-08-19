@@ -4,6 +4,7 @@ import aiApi from '../../services/aiApi';
 import courseApi from '../../services/courseApi';
 import { useToast } from '../../context/ToastContext';
 import { formatDateTime } from '../../utils/format';
+import { Sparkles } from 'lucide-react';
 
 const QUESTION_TYPES = ['MCQ', 'Short Answer', 'Long Answer', 'True/False'];
 
@@ -157,7 +158,7 @@ const AIQuestions = () => {
               </div>
             </div>
             <button className="btn btn-primary" onClick={generate} disabled={generating}>
-              {generating ? 'Generating…' : '✨ Generate Questions'}
+              {generating ? 'Generating…' : <><Sparkles size={16} /> Generate Questions</>}
             </button>
           </div>
         </div>

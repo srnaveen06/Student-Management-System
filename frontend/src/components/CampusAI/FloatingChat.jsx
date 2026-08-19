@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useAI } from '../../context/AIContext';
+import { Sparkles, X, Bot, RefreshCw, Send } from 'lucide-react';
 
 // Global CampusAI assistant widget. Mounted once in App.jsx.
 // Reads/controls chat state via AIContext so the AIAssistant page and the
@@ -56,12 +57,12 @@ const FloatingChat = () => {
         <div className="ai-widget">
           <div className="ai-widget-header">
             <div>
-              <h3>✨ CampusAI</h3>
+              <h3><Sparkles size={18} /> CampusAI</h3>
               <p>Ask anything about your students</p>
             </div>
             <div className="ai-widget-actions">
-              <button className="ai-icon-btn" title="New conversation" onClick={resetChat}>↺</button>
-              <button className="ai-icon-btn" title="Close" onClick={closeChat}>×</button>
+              <button className="ai-icon-btn" title="New conversation" onClick={resetChat}><RefreshCw size={16} /></button>
+              <button className="ai-icon-btn" title="Close" onClick={closeChat}><X size={16} /></button>
             </div>
           </div>
 
@@ -123,7 +124,7 @@ const FloatingChat = () => {
                 disabled={chatLoading}
               />
               <button className="ai-send-btn" onClick={handleSend} disabled={chatLoading || !input.trim()} title="Send">
-                ➤
+                <Send size={16} />
               </button>
             </div>
           </div>
@@ -133,7 +134,7 @@ const FloatingChat = () => {
       {enabled && (
         <button className="ai-fab" onClick={chatOpen ? closeChat : openChat} title="CampusAI Assistant">
           <span className="ai-fab-dot" />
-          {chatOpen ? '✕' : '🤖'}
+          {chatOpen ? <X size={20} /> : <Bot size={20} />}
         </button>
       )}
     </>

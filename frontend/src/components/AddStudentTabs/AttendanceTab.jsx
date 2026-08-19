@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CalendarDays, Plus, X } from 'lucide-react';
 import courseApi from '../../services/courseApi';
 
 // Optional attendance records to create together with the student.
@@ -42,7 +43,7 @@ const AttendanceTab = ({ value = [], onChange, branch, semester, editMode = fals
 
   return (
     <div className="form-container">
-      <h2 className="form-title">📅 Attendance</h2>
+      <h2 className="form-title"><CalendarDays size={20} /> Attendance</h2>
       <p className="tab-hint">
         Optionally record attendance for this student. Each record is saved against a subject on a specific date.
       </p>
@@ -99,7 +100,7 @@ const AttendanceTab = ({ value = [], onChange, branch, semester, editMode = fals
         <div className="form-group">
           <label className="form-label">&nbsp;</label>
           <button type="button" className="btn btn-outline" onClick={addRow}>
-            ➕ Add Record
+            <Plus size={16} /> Add Record
           </button>
         </div>
       </div>
@@ -119,7 +120,7 @@ const AttendanceTab = ({ value = [], onChange, branch, semester, editMode = fals
                   <strong>{subject ? subject.subject_name : `Subject #${r.subject_id}`}</strong>
                   {' — '}{r.attendance_date} · {r.status}
                 </span>
-                <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeRow(i)}>✕ Remove</button>
+                <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeRow(i)}><X size={14} /> Remove</button>
               </div>
             );
           })}

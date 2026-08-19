@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FileText, Plus, AlertTriangle, X } from 'lucide-react';
 import examApi from '../../services/examApi';
 import courseApi from '../../services/courseApi';
 import { formatDate } from '../../utils/format';
@@ -107,7 +108,7 @@ const ExamsTab = ({ value = [], onChange, branch, semester }) => {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">📝 Examinations</h2>
+      <h2 className="form-title"><FileText size={20} /> Examinations</h2>
       <p className="tab-hint">
         Enroll this student in existing exams, or create a new exam with this student's marks.
       </p>
@@ -138,7 +139,7 @@ const ExamsTab = ({ value = [], onChange, branch, semester }) => {
       </div>
 
       {/* Create new exam */}
-      <h3 className="tab-subtitle">➕ Create New Exam with Marks</h3>
+      <h3 className="tab-subtitle"><Plus size={16} /> Create New Exam with Marks</h3>
       <div className="form-grid">
         <div className="form-group">
           <label className="form-label">Exam Name <span className="required">*</span></label>
@@ -259,7 +260,7 @@ const ExamsTab = ({ value = [], onChange, branch, semester }) => {
       {newExam.exam_name && (
         <div className="tab-hint" style={{ marginTop: 8 }}>
           Marks total: <strong>{marksTotal}</strong> / {maxMarks}
-          {maxMarks > 0 && marksTotal > maxMarks ? ' ⚠️ exceeds max marks' : ''}
+          {maxMarks > 0 && marksTotal > maxMarks ? <><AlertTriangle size={14} /> exceeds max marks</> : ''}
         </div>
       )}
 
@@ -275,7 +276,7 @@ const ExamsTab = ({ value = [], onChange, branch, semester }) => {
                   {' — '}{subject ? subject.subject_name : `Subject #${ex.subject_id}`}
                   {' · Marks: '}{ex.internal_marks}/{ex.external_marks}/{ex.practical_marks}/{ex.assignment_marks}
                 </span>
-                <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeExtra(i)}>✕</button>
+                <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeExtra(i)}><X size={14} /></button>
               </div>
             );
           })}

@@ -7,13 +7,14 @@ import CoursesSubjectsTab from '../components/AddStudentTabs/CoursesSubjectsTab'
 import ExamsTab from '../components/AddStudentTabs/ExamsTab';
 import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
+import { User, CalendarDays, CreditCard, FileText, Clock, Plus } from 'lucide-react';
 
 const TABS = [
-  { key: 'basic', label: 'Basic Info', icon: '👤' },
-  { key: 'attendance', label: 'Attendance', icon: '📅' },
-  { key: 'fees', label: 'Fees', icon: '💰' },
-  { key: 'courses', label: 'Courses & Subjects', icon: '📚' },
-  { key: 'exams', label: 'Examinations', icon: '📝' }
+  { key: 'basic', label: 'Basic Info', icon: <User size={16} /> },
+  { key: 'attendance', label: 'Attendance', icon: <CalendarDays size={16} /> },
+  { key: 'fees', label: 'Fees', icon: <CreditCard size={16} /> },
+  { key: 'courses', label: 'Courses & Subjects', icon: <FileText size={16} /> },
+  { key: 'exams', label: 'Examinations', icon: <Clock size={16} /> }
 ];
 
 const AddStudent = () => {
@@ -135,7 +136,7 @@ const AddStudent = () => {
           Cancel
         </button>
         <button type="button" className="btn btn-primary" onClick={handleAddClick} disabled={loading}>
-          {loading ? '⏳ Saving...' : '➕ Add Student'}
+          {loading ? <><Clock size={16} /> Saving...</> : <><Plus size={16} /> Add Student</>}
         </button>
       </div>
 

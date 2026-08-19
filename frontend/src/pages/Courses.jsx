@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Plus, School, BookOpen, Edit, Trash2 } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 import courseApi from '../services/courseApi';
@@ -227,7 +228,7 @@ const Courses = () => {
               ? setCourseModal({ open: true, editing: null, form: emptyCourse })
               : setSubjectModal({ open: true, editing: null, form: emptySubject })}
           >
-            ➕ Add {tab === 'courses' ? 'Course' : 'Subject'}
+            <Plus size={16} /> Add {tab === 'courses' ? 'Course' : 'Subject'}
           </button>
         )}
       </div>
@@ -269,15 +270,15 @@ const Courses = () => {
                   <span className={`badge ${course.status === 'Active' ? 'badge-active' : 'badge-inactive'}`}>{course.status}</span>
                 </div>
                 <div className="course-card-meta">
-                  {course.branch && <span>🏫 {course.branch}</span>}
-                  {course.semester && <span>📚 Sem {course.semester}</span>}
-                  {course.credits ? <span>⭐ {course.credits} credits</span> : null}
+                  {course.branch && <span><School size={14} /> {course.branch}</span>}
+                  {course.semester && <span><BookOpen size={14} /> Sem {course.semester}</span>}
+                  {course.credits ? <span>{course.credits} credits</span> : null}
                 </div>
                 {course.description && <p className="text-muted">{course.description}</p>}
                 {canEdit && (
                   <div className="course-card-actions">
-                    <button className="btn btn-sm btn-outline" onClick={() => setCourseModal({ open: true, editing: course, form: { ...emptyCourse, ...course } })}>✏ Edit</button>
-                    <button className="btn btn-sm btn-danger" onClick={() => deleteCourse(course)}>🗑 Delete</button>
+                    <button className="btn btn-sm btn-outline" onClick={() => setCourseModal({ open: true, editing: course, form: { ...emptyCourse, ...course } })}><Edit size={16} /> Edit</button>
+                    <button className="btn btn-sm btn-danger" onClick={() => deleteCourse(course)}><Trash2 size={16} /> Delete</button>
                   </div>
                 )}
               </div>
@@ -332,8 +333,8 @@ const Courses = () => {
                       {canEdit && (
                         <td>
                           <div className="action-buttons">
-                            <button className="action-btn edit" title="Edit" onClick={() => setSubjectModal({ open: true, editing: subject, form: { ...emptySubject, ...subject } })}>✏</button>
-                            <button className="action-btn delete" title="Delete" onClick={() => deleteSubject(subject)}>🗑</button>
+                            <button className="action-btn edit" title="Edit" onClick={() => setSubjectModal({ open: true, editing: subject, form: { ...emptySubject, ...subject } })}><Edit size={16} /></button>
+                            <button className="action-btn delete" title="Delete" onClick={() => deleteSubject(subject)}><Trash2 size={16} /></button>
                           </div>
                         </td>
                       )}

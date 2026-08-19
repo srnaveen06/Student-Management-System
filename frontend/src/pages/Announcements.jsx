@@ -8,15 +8,16 @@ import announcementApi from '../services/announcementApi';
 import { useToast } from '../context/ToastContext';
 import { formatDateTime } from '../utils/format';
 import { isAdmin } from '../utils/auth';
+import { Megaphone, Plus, Edit, Trash2, Pin, Trophy, AlertTriangle, Inbox, FileText, Sparkles, CreditCard } from 'lucide-react';
 
 const TYPE_META = {
-  General: { icon: '📢', className: 'badge-info' },
-  Exam: { icon: '📝', className: 'badge-warning' },
-  Notice: { icon: '📌', className: 'badge-active' },
-  Event: { icon: '🎭', className: 'badge-info' },
-  Fee: { icon: '💰', className: 'badge-inactive' },
-  Result: { icon: '🏆', className: 'badge-active' },
-  Urgent: { icon: '🚨', className: 'badge-danger' }
+  General: { icon: <Megaphone size={16} />, className: 'badge-info' },
+  Exam: { icon: <FileText size={16} />, className: 'badge-warning' },
+  Notice: { icon: <Pin size={16} />, className: 'badge-active' },
+  Event: { icon: <Sparkles size={16} />, className: 'badge-info' },
+  Fee: { icon: <CreditCard size={16} />, className: 'badge-inactive' },
+  Result: { icon: <Trophy size={16} />, className: 'badge-active' },
+  Urgent: { icon: <AlertTriangle size={16} />, className: 'badge-danger' }
 };
 
 const AUDIENCES = ['All', 'Students', 'Teachers', 'Staff'];
@@ -105,11 +106,11 @@ const Announcements = () => {
   return (
     <div>
       <PageHeader
-        title="📢 Announcements"
+        title={<><Megaphone size={28} /> Announcements</>}
         subtitle="Broadcast notices, results, and urgent updates"
         actions={canManage && (
           <button className="btn btn-primary" onClick={() => setFormModal({ open: true, editing: null, form: emptyForm() })}>
-            ➕ New Announcement
+            <Plus size={16} /> New Announcement
           </button>
         )}
       />
@@ -137,7 +138,7 @@ const Announcements = () => {
       {loading ? (
         <InlineLoader />
       ) : announcements.length === 0 ? (
-        <EmptyState icon="📭" title="No announcements" message="Publish your first announcement" />
+        <EmptyState icon={<Inbox />} title="No announcements" message="Publish your first announcement" />
       ) : (
         <div className="announcements-list">
           {announcements.map(a => {
@@ -147,7 +148,7 @@ const Announcements = () => {
                 <div className="announcement-card-header">
                   <h3>
                     {meta.icon} {a.title}
-                    {a.is_pinned && <span className="badge badge-warning" style={{ marginLeft: '8px' }}>📌 Pinned</span>}
+                    {a.is_pinned && <span className="badge badge-warning" style={{ marginLeft: '8px' }}><Pin size={14} /> Pinned</span>}
                   </h3>
                   <div className="announcement-meta">
                     <span className={`badge ${meta.className}`}>{a.announcement_type}</span>
@@ -156,10 +157,10 @@ const Announcements = () => {
                 </div>
                 <p className="announcement-content">{a.content}</p>
                 <div className="announcement-footer">
-                  <span>👤 {a.published_by_name || 'Admin'} · {formatDateTime(a.created_at)}</span>
+                  <span>{a.published_by_name || 'Admin'} · {formatDateTime(a.created_at)}</span>
                   {canManage && (
                     <div className="action-buttons">
-                      <button className="action-btn view" title={a.is_pinned ? 'Unpin' : 'Pin to top'} onClick={() => togglePin(a)}>📌</button>
+                      <button className="action-btn view" title={a.is_pinned ? 'Unpin' : 'Pin to top'} onClick={() => togglePin(a)}><Pin size={16} /></button>
                       <button
                         className="action-btn edit"
                         title="Edit"
@@ -170,8 +171,8 @@ const Announcements = () => {
                             announcementType: a.announcement_type, audience: a.audience, isPinned: !!a.is_pinned
                           }
                         })}
-                      >✏️</button>
-                      <button className="action-btn delete" title="Delete" onClick={() => handleDelete(a)}>🗑</button>
+                      ><Edit size={16} /></button>
+                      <button className="action-btn delete" title="Delete" onClick={() => handleDelete(a)}><Trash2 size={16} /></button>
                     </div>
                   )}
                 </div>
@@ -198,7 +199,7 @@ const Announcements = () => {
           <>
             <button className="btn btn-outline" onClick={() => setFormModal({ open: false, editing: null, form: emptyForm() })}>Cancel</button>
             <button className="btn btn-primary" onClick={handleSave}>
-              {formModal.editing ? '💾 Save Changes' : '📢 Publish'}
+              {formModal.editing ? <><Edit size={16} /> Save Changes</> : <><Megaphone size={16} /> Publish</>}
             </button>
           </>
         }

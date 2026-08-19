@@ -3,6 +3,7 @@ import { InlineLoader } from '../../components/Loader/Loader';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
 import { formatDateTime } from '../../utils/format';
+import { Sparkles, Printer } from 'lucide-react';
 
 const REPORT_TYPES = [
   { value: 'academic', label: 'Academic Performance' },
@@ -97,7 +98,7 @@ const AIReports = () => {
               </div>
             </div>
             <button className="btn btn-primary" onClick={generate} disabled={generating}>
-              {generating ? 'Generating…' : '✨ Generate Report'}
+              {generating ? 'Generating…' : <><Sparkles size={16} /> Generate Report</>}
             </button>
           </div>
         </div>
@@ -109,7 +110,7 @@ const AIReports = () => {
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
                   <h2 style={{ fontSize: 'var(--font-size-lg)' }}>{report.title}</h2>
-                  <button className="btn btn-outline btn-sm" onClick={printReport}>🖨 Print / Export PDF</button>
+                  <button className="btn btn-outline btn-sm" onClick={printReport}><Printer size={16} /> Print / Export PDF</button>
                 </div>
                 {report.sections.map((section, i) => (
                   <div key={i} style={{ marginBottom: '16px' }}>

@@ -1,5 +1,5 @@
 /* ============================================
-   Settings Styles
+   Settings — Modern Settings Page
    ============================================ */
 .settings-grid {
   display: grid;
@@ -9,45 +9,10 @@
 
 .settings-desc {
   color: var(--text-secondary);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   margin-bottom: var(--space-md);
 }
 
-/* Profile Card */
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding-bottom: var(--space-md);
-  border-bottom: 1px solid var(--border);
-}
-
-.profile-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-full);
-  background: var(--primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.profile-info h3 {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.profile-info p {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-/* Theme Options */
 .theme-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -61,7 +26,7 @@
   gap: var(--space-sm);
   padding: var(--space-lg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xl);
   background: var(--bg-secondary);
   color: var(--text-secondary);
   transition: var(--transition);
@@ -76,7 +41,7 @@
 .theme-option.active {
   border-color: var(--primary);
   background: var(--primary-bg);
-  box-shadow: 0 0 0 3px var(--primary-bg);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   color: var(--primary);
 }
 
@@ -89,14 +54,12 @@
   font-weight: 600;
 }
 
-/* Change Password Form */
 .settings-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .settings-grid {
     grid-template-columns: 1fr;

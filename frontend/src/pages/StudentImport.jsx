@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FileText, Search, CheckCircle } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
@@ -78,7 +79,7 @@ const StudentImport = () => {
           <p className="text-muted">
             Required columns: <strong>Student ID, Name, Email, Phone, Gender, Branch, Institute, Semester, Admission Year, Date of Birth</strong>
           </p>
-          <button className="btn btn-outline" onClick={downloadTemplate} style={{ marginTop: '12px' }}>📄 Download Template</button>
+          <button className="btn btn-outline" onClick={downloadTemplate} style={{ marginTop: '12px' }}><FileText size={16} /> Download Template</button>
         </div>
       </div>
 
@@ -92,7 +93,7 @@ const StudentImport = () => {
           {loading && <InlineLoader />}
           {!loading && file && (
             <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
-              <button className="btn btn-primary" onClick={() => runImport(true)}>🔍 Preview & Validate</button>
+              <button className="btn btn-primary" onClick={() => runImport(true)}><Search size={16} /> Preview & Validate</button>
             </div>
           )}
         </div>
@@ -114,7 +115,7 @@ const StudentImport = () => {
 
             {result.dryRun && result.valid > 0 && (
               <button className="btn btn-success" onClick={() => runImport(false)} style={{ margin: '16px 0' }}>
-                ✅ Confirm Import ({result.valid} students)
+                <CheckCircle size={16} /> Confirm Import ({result.valid} students)
               </button>
             )}
 

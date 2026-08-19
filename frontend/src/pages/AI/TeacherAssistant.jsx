@@ -3,6 +3,7 @@ import { InlineLoader } from '../../components/Loader/Loader';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
 import { riskClass } from '../../utils/ai';
+import { BarChart3, Mail, Sparkles, PartyPopper } from 'lucide-react';
 
 const MESSAGE_TYPES = [
   { value: 'attendance_warning', label: 'Attendance Warning' },
@@ -73,8 +74,8 @@ const TeacherAssistant = () => {
       </div>
 
       <div className="profile-tabs" style={{ marginBottom: '16px' }}>
-        <button className={`profile-tab ${tab === 'analysis' ? 'active' : ''}`} onClick={() => setTab('analysis')}>📊 Class Analysis</button>
-        <button className={`profile-tab ${tab === 'messages' ? 'active' : ''}`} onClick={() => setTab('messages')}>✉️ Message Generator</button>
+        <button className={`profile-tab ${tab === 'analysis' ? 'active' : ''}`} onClick={() => setTab('analysis')}><BarChart3 size={16} /> Class Analysis</button>
+        <button className={`profile-tab ${tab === 'messages' ? 'active' : ''}`} onClick={() => setTab('messages')}><Mail size={16} /> Message Generator</button>
       </div>
 
       {tab === 'analysis' && (
@@ -152,7 +153,7 @@ const TeacherAssistant = () => {
                   <div className="dashboard-section-header"><h2>At-Risk Students</h2></div>
                   <div className="dashboard-section-body">
                     {analysis.atRiskStudents.length === 0 ? (
-                      <p className="muted-center">No at-risk students 🎉</p>
+                      <p className="muted-center">No at-risk students <PartyPopper size={14} /></p>
                     ) : (
                       <div className="table-wrapper">
                         <table className="data-table">
@@ -237,7 +238,7 @@ const TeacherAssistant = () => {
                 </div>
               </div>
               <button className="btn btn-primary" onClick={generateMessages} disabled={msgLoading}>
-                {msgLoading ? 'Generating…' : '✨ Generate Drafts'}
+                {msgLoading ? 'Generating…' : <><Sparkles size={16} /> Generate Drafts</>}
               </button>
               <p className="form-hint">Drafts are for review before sending — no messages are sent automatically.</p>
             </div>

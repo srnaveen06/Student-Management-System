@@ -9,13 +9,14 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate, formatDateTime } from '../utils/format';
 import { isAdmin, isTeacher } from '../utils/auth';
+import { CalendarDays, Plus, CheckCircle, X, Trash2, Ban, Clock, AlertTriangle, FileText, Send, Save } from 'lucide-react';
 
 const LEAVE_TYPE_META = {
-  Sick: { icon: '🤒', className: 'badge-danger' },
-  Casual: { icon: '😊', className: 'badge-warning' },
-  Emergency: { icon: '🚨', className: 'badge-danger' },
-  Study: { icon: '📚', className: 'badge-info' },
-  Other: { icon: '📄', className: 'badge-inactive' }
+  Sick: { icon: <AlertTriangle size={16} />, className: 'badge-danger' },
+  Casual: { icon: <Clock size={16} />, className: 'badge-warning' },
+  Emergency: { icon: <AlertTriangle size={16} />, className: 'badge-danger' },
+  Study: { icon: <FileText size={16} />, className: 'badge-info' },
+  Other: { icon: <FileText size={16} />, className: 'badge-inactive' }
 };
 
 const STATUS_CLASS = {
@@ -172,14 +173,14 @@ const LeaveManagement = () => {
       <div className="action-buttons">
         {l.status === 'Pending' && (
           <>
-            <button className="action-btn view" title="Approve" onClick={() => openStatus(l, 'Approved')}>✅</button>
-            <button className="action-btn delete" title="Reject" onClick={() => openStatus(l, 'Rejected')}>❌</button>
+            <button className="action-btn view" title="Approve" onClick={() => openStatus(l, 'Approved')}><CheckCircle size={16} /></button>
+            <button className="action-btn delete" title="Reject" onClick={() => openStatus(l, 'Rejected')}><X size={16} /></button>
           </>
         )}
         {l.status === 'Approved' && (
-          <button className="action-btn view" title="Cancel leave" onClick={() => openStatus(l, 'Cancelled')}>🚫</button>
+          <button className="action-btn view" title="Cancel leave" onClick={() => openStatus(l, 'Cancelled')}><Ban size={16} /></button>
         )}
-        <button className="action-btn delete" title="Delete" onClick={() => handleDelete(l)}>🗑</button>
+        <button className="action-btn delete" title="Delete" onClick={() => handleDelete(l)}><Trash2 size={16} /></button>
       </div>
     );
   };
@@ -187,11 +188,11 @@ const LeaveManagement = () => {
   return (
     <div>
       <PageHeader
-        title="🗓️ Leave Management"
+        title={<><CalendarDays size={28} /> Leave Management</>}
         subtitle="Track and manage student leave requests"
         actions={canManage && (
           <button className="btn btn-primary" onClick={() => setFormModal({ open: true, editing: null, form: emptyForm() })}>
-            ➕ New Leave Request
+            <Plus size={16} /> New Leave Request
           </button>
         )}
       />
@@ -241,7 +242,7 @@ const LeaveManagement = () => {
       {loading ? (
         <InlineLoader />
       ) : leaves.length === 0 ? (
-        <EmptyState icon="🗓️" title="No leave requests" message="Submit a new leave request to get started" />
+        <EmptyState icon={<CalendarDays />} title="No leave requests" message="Submit a new leave request to get started" />
       ) : (
         <div className="table-responsive">
           <table className="data-table">
@@ -274,7 +275,7 @@ const LeaveManagement = () => {
                     </td>
                     <td>
                       <span title={l.reason}>{l.reason ? (l.reason.length > 40 ? `${l.reason.slice(0, 40)}…` : l.reason) : '—'}</span>
-                      {l.attachment && <div className="text-muted" style={{ fontSize: 'var(--font-size-xs)' }}>📎 {l.attachment}</div>}
+                      {l.attachment && <div className="text-muted" style={{ fontSize: 'var(--font-size-xs)' }}>{l.attachment}</div>}
                     </td>
                     <td>
                       <span className={`leave-status ${STATUS_CLASS[l.status]}`}>{l.status}</span>
@@ -306,7 +307,7 @@ const LeaveManagement = () => {
           <>
             <button className="btn btn-outline" onClick={() => setFormModal({ open: false, editing: null, form: emptyForm() })}>Cancel</button>
             <button className="btn btn-primary" onClick={handleSave}>
-              {formModal.editing ? '💾 Save Changes' : '📨 Submit Request'}
+              {formModal.editing ? <><Save size={16} /> Save Changes</> : <><Send size={16} /> Submit Request</>}
             </button>
           </>
         }
@@ -331,7 +332,7 @@ const LeaveManagement = () => {
             value={formModal.form.leaveType}
             onChange={(e) => setFormModal(prev => ({ ...prev, form: { ...prev.form, leaveType: e.target.value } }))}
           >
-            {Object.keys(LEAVE_TYPE_META).map(t => <option key={t} value={t}>{LEAVE_TYPE_META[t].icon} {t}</option>)}
+            {Object.keys(LEAVE_TYPE_META).map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
         <div className="form-group">
@@ -382,7 +383,7 @@ const LeaveManagement = () => {
           <>
             <button className="btn btn-outline" onClick={() => setStatusModal({ leave: null, action: '', remarks: '' })}>Close</button>
             <button className="btn btn-primary" onClick={handleStatusChange}>
-              {statusModal.action === 'Rejected' ? '❌ Reject' : '🚫 Cancel Leave'}
+              {statusModal.action === 'Rejected' ? <><X size={16} /> Reject</> : <><Ban size={16} /> Cancel Leave</>}
             </button>
           </>
         }

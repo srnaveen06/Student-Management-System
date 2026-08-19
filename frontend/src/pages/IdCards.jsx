@@ -10,6 +10,7 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate, getInitials } from '../utils/format';
 import { isAdmin } from '../utils/auth';
+import { CreditCard, Eye, Pause, Play, Ban, Trash2, Building2 } from 'lucide-react';
 
 const STATUS_CLASS = {
   Active: 'leave-status-approved',
@@ -65,7 +66,7 @@ const IdCards = () => {
   useEffect(() => {
     if (issueModal.open && students.length === 0) {
       studentApi.getAll({ page: 1, limit: 100 })
-        .then(res => { if (res.success) setStudents(res.students || []); })
+        .then(res => { if (res.success) setStudents(res.data || []); })
         .catch(() => toast.error('Failed to load students'));
     }
   }, [issueModal.open, students.length, toast]);
@@ -128,7 +129,7 @@ const IdCards = () => {
     <div className="idcard-preview">
       <div className="idcard-header">
         <div>
-          <h2>🏛️ Student ID</h2>
+          <h2><Building2 size={20} /> Student ID</h2>
           <p>Verified College Identity Card</p>
         </div>
         <div style={{ textAlign: 'right' }}>
@@ -165,11 +166,11 @@ const IdCards = () => {
   return (
     <div>
       <PageHeader
-        title="🎫 Student ID Cards"
+        title={<><CreditCard size={28} /> Student ID Cards</>}
         subtitle="Issue, manage and verify student identity cards"
         actions={canManage && (
           <button className="btn btn-primary" onClick={() => setIssueModal({ open: true, studentId: '', issuedOn: '', validUntil: '' })}>
-            🆔 Issue ID Card
+            <CreditCard size={16} /> Issue ID Card
           </button>
         )}
       />
@@ -212,7 +213,7 @@ const IdCards = () => {
       {loading ? (
         <InlineLoader />
       ) : cards.length === 0 ? (
-        <EmptyState icon="🎫" title="No ID cards found" message="Issue an ID card to get started" />
+        <EmptyState icon={<CreditCard />} title="No ID cards found" message="Issue an ID card to get started" />
       ) : (
         <div className="table-responsive">
           <table className="data-table">
@@ -241,16 +242,16 @@ const IdCards = () => {
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     <div className="action-buttons">
-                      <button className="action-btn view" title="View Card" onClick={() => setViewCard(card)}>🪪</button>
+                      <button className="action-btn view" title="View Card" onClick={() => setViewCard(card)}><Eye size={16} /></button>
                       {canManage && (
                         <>
                           <button className="action-btn edit" title={card.status === 'Active' ? 'Deactivate' : 'Activate'} onClick={() => toggleStatus(card)}>
-                            {card.status === 'Active' ? '⏸️' : '▶️'}
+                            {card.status === 'Active' ? <Pause size={16} /> : <Play size={16} />}
                           </button>
                           {card.status !== 'Revoked' && (
-                            <button className="action-btn delete" title="Revoke" onClick={() => handleRevoke(card)}>🚫</button>
+                            <button className="action-btn delete" title="Revoke" onClick={() => handleRevoke(card)}><Ban size={16} /></button>
                           )}
-                          <button className="action-btn delete" title="Delete" onClick={() => handleDelete(card)}>🗑</button>
+                          <button className="action-btn delete" title="Delete" onClick={() => handleDelete(card)}><Trash2 size={16} /></button>
                         </>
                       )}
                     </div>
@@ -274,7 +275,7 @@ const IdCards = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setIssueModal({ open: false, studentId: '', issuedOn: '', validUntil: '' })}>Cancel</button>
-            <button className="btn btn-primary" onClick={handleIssue}>🆔 Issue Card</button>
+            <button className="btn btn-primary" onClick={handleIssue}><CreditCard size={16} /> Issue Card</button>
           </>
         }
       >
@@ -320,7 +321,7 @@ const IdCards = () => {
           <>
             {viewCard && canManage && viewCard.status !== 'Revoked' && (
               <button className="btn btn-danger" style={{ marginRight: 'auto' }} onClick={() => { handleRevoke(viewCard); setViewCard(null); }}>
-                🚫 Revoke Card
+                <Ban size={16} /> Revoke Card
               </button>
             )}
             <button className="btn btn-outline" onClick={() => setViewCard(null)}>Close</button>

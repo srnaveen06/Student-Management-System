@@ -8,13 +8,14 @@ import ExamsTab from '../components/AddStudentTabs/ExamsTab';
 import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { InlineLoader } from '../components/Loader/Loader';
+import { User, CalendarDays, CreditCard, FileText, Clock, Save } from 'lucide-react';
 
 const TABS = [
-  { key: 'basic', label: 'Basic Info', icon: '👤' },
-  { key: 'attendance', label: 'Attendance', icon: '📅' },
-  { key: 'fees', label: 'Fees', icon: '💰' },
-  { key: 'courses', label: 'Courses & Subjects', icon: '📚' },
-  { key: 'exams', label: 'Examinations', icon: '📝' }
+  { key: 'basic', label: 'Basic Info', icon: <User size={16} /> },
+  { key: 'attendance', label: 'Attendance', icon: <CalendarDays size={16} /> },
+  { key: 'fees', label: 'Fees', icon: <CreditCard size={16} /> },
+  { key: 'courses', label: 'Courses & Subjects', icon: <FileText size={16} /> },
+  { key: 'exams', label: 'Examinations', icon: <Clock size={16} /> }
 ];
 
 const EditStudent = () => {
@@ -188,7 +189,7 @@ const EditStudent = () => {
           Cancel
         </button>
         <button type="button" className="btn btn-primary" onClick={handleSaveClick} disabled={saving}>
-          {saving ? '⏳ Saving...' : '💾 Save Changes'}
+          {saving ? <><Clock size={16} /> Saving...</> : <><Save size={16} /> Save Changes</>}
         </button>
       </div>
 

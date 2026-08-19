@@ -3,6 +3,7 @@ import { InlineLoader } from '../../components/Loader/Loader';
 import InsightsList from '../../components/AI/InsightsList';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
+import { RefreshCw } from 'lucide-react';
 
 const AIInsights = () => {
   const { toast } = useToast();
@@ -30,7 +31,7 @@ const AIInsights = () => {
           <h1>AI Insights</h1>
           <p>Automatically generated observations from real student data.</p>
         </div>
-        <button className="btn btn-outline btn-sm" onClick={load}>↺ Refresh</button>
+        <button className="btn btn-outline btn-sm" onClick={load}><RefreshCw size={14} /> Refresh</button>
       </div>
 
       {loading ? <InlineLoader /> : <InsightsList insights={insights} />}

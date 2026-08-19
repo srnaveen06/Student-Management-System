@@ -3,6 +3,7 @@ import DashboardCard from '../components/DashboardCard/DashboardCard';
 import { InlineLoader } from '../components/Loader/Loader';
 import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
+import { Download, Printer, Users, CheckCircle, Pause, Building2, GraduationCap, Pin } from 'lucide-react';
 
 // Color variants for progress bars
 const BAR_COLORS = ['blue', 'green', 'teal', 'warning', 'red'];
@@ -130,27 +131,27 @@ const Reports = () => {
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button className="btn btn-outline btn-sm" onClick={exportCSV}>
-            📥 Export CSV
+            <Download size={16} /> Export CSV
           </button>
           <button className="btn btn-outline btn-sm" onClick={printReport}>
-            🖨 Print
+            <Printer size={16} /> Print
           </button>
         </div>
       </div>
 
       {/* Summary Cards */}
       <div className="dashboard-stats">
-        <DashboardCard icon="👥" iconColor="blue" title="Total Students" value={data?.totalStudents || 0} />
-        <DashboardCard icon="✅" iconColor="green" title="Active Students" value={data?.activeStudents || 0} />
-        <DashboardCard icon="⏸" iconColor="red" title="Inactive Students" value={data?.inactiveStudents || 0} />
-        <DashboardCard icon="🏛" iconColor="teal" title="Total Branches" value={data?.totalBranches || 0} />
+        <DashboardCard icon={<Users size={24} />} iconColor="blue" title="Total Students" value={data?.totalStudents || 0} />
+        <DashboardCard icon={<CheckCircle size={24} />} iconColor="green" title="Active Students" value={data?.activeStudents || 0} />
+        <DashboardCard icon={<Pause size={24} />} iconColor="red" title="Inactive Students" value={data?.inactiveStudents || 0} />
+        <DashboardCard icon={<Building2 size={24} />} iconColor="teal" title="Total Branches" value={data?.totalBranches || 0} />
       </div>
 
       {/* Distribution Sections */}
       <div className="reports-grid">
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>👥 Students by Branch</h2>
+            <h2><Users size={18} /> Students by Branch</h2>
           </div>
           <div className="dashboard-section-body">
             {renderDistribution(data?.byBranch || [], 'branch')}
@@ -159,7 +160,7 @@ const Reports = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>🏛 Students by Institute</h2>
+            <h2><Building2 size={18} /> Students by Institute</h2>
           </div>
           <div className="dashboard-section-body">
             {renderDistribution(data?.byInstitute || [], 'institute', 1)}
@@ -168,7 +169,7 @@ const Reports = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>🎓 Students by Semester</h2>
+            <h2><GraduationCap size={18} /> Students by Semester</h2>
           </div>
           <div className="dashboard-section-body">
             {renderDistribution(data?.bySemester || [], 'semester', 2)}
@@ -177,7 +178,7 @@ const Reports = () => {
 
         <div className="dashboard-section">
           <div className="dashboard-section-header">
-            <h2>⚥ Students by Gender</h2>
+            <h2><Users size={18} /> Students by Gender</h2>
           </div>
           <div className="dashboard-section-body">
             {renderDistribution(data?.byGender || [], 'gender', 2)}
@@ -186,7 +187,7 @@ const Reports = () => {
 
         <div className="dashboard-section reports-section-full">
           <div className="dashboard-section-header">
-            <h2>📌 Status Breakdown</h2>
+            <h2><Pin size={18} /> Status Breakdown</h2>
           </div>
           <div className="dashboard-section-body">
             {renderDistribution(data?.byStatus || [], 'status', 3)}

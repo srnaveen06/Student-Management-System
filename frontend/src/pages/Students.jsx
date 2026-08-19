@@ -10,6 +10,7 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate, getInitials } from '../utils/format';
 import { isAdmin } from '../utils/auth';
+import { Plus, Download, Upload, Printer, X, UserCheck, UserX, Trash2, User, Edit } from 'lucide-react';
 
 const Students = () => {
   const navigate = useNavigate();
@@ -192,13 +193,13 @@ const Students = () => {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           {canManage && (
             <button className="btn btn-outline btn-sm" onClick={() => navigate('/students/import')}>
-              📥 Import CSV
+              <Upload size={14} /> Import CSV
             </button>
           )}
-          <button className="btn btn-outline btn-sm" onClick={exportCSV}>📤 Export CSV</button>
-          <button className="btn btn-outline btn-sm" onClick={printList}>🖨 Print</button>
+          <button className="btn btn-outline btn-sm" onClick={exportCSV}><Download size={14} /> Export CSV</button>
+          <button className="btn btn-outline btn-sm" onClick={printList}><Printer size={14} /> Print</button>
           {canManage && (
-            <button className="btn btn-primary btn-sm" onClick={() => navigate('/students/add')}>➕ Add Student</button>
+            <button className="btn btn-primary btn-sm" onClick={() => navigate('/students/add')}><Plus size={14} /> Add Student</button>
           )}
         </div>
       </div>
@@ -275,10 +276,10 @@ const Students = () => {
       {canManage && selected.length > 0 && (
         <div className="bulk-bar">
           <span><strong>{selected.length}</strong> selected</span>
-          <button className="btn btn-sm btn-success" onClick={() => setBulkModal({ open: true, type: 'activate' })}>✅ Activate</button>
-          <button className="btn btn-sm btn-outline" onClick={() => setBulkModal({ open: true, type: 'deactivate' })}>⏸ Deactivate</button>
-          <button className="btn btn-sm btn-danger" onClick={() => setBulkModal({ open: true, type: 'delete' })}>🗑 Delete</button>
-          <button className="btn btn-sm btn-icon" onClick={() => setSelected([])}>✕ Clear</button>
+          <button className="btn btn-sm btn-success" onClick={() => setBulkModal({ open: true, type: 'activate' })}><UserCheck size={14} /> Activate</button>
+          <button className="btn btn-sm btn-outline" onClick={() => setBulkModal({ open: true, type: 'deactivate' })}><UserX size={14} /> Deactivate</button>
+          <button className="btn btn-sm btn-danger" onClick={() => setBulkModal({ open: true, type: 'delete' })}><Trash2 size={14} /> Delete</button>
+          <button className="btn btn-sm btn-icon" onClick={() => setSelected([])}><X size={14} /></button>
         </div>
       )}
 
@@ -350,7 +351,7 @@ const Students = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setDeleteModal({ open: false, student: null })}>Cancel</button>
-            <button className="btn btn-danger" onClick={handleDelete}>🗑 Delete</button>
+            <button className="btn btn-danger" onClick={handleDelete}><Trash2 size={14} /> Delete</button>
           </>
         }
       >
@@ -366,11 +367,11 @@ const Students = () => {
           viewModal.student ? (
             <>
               <button className="btn btn-outline" onClick={() => navigate(`/students/profile/${viewModal.student.id}`)}>
-                👤 Full Profile
+                <User size={14} /> Full Profile
               </button>
               {canManage && (
                 <button className="btn btn-primary" onClick={() => navigate(`/students/edit/${viewModal.student.id}`)}>
-                  ✏ Edit
+                  <Edit size={14} /> Edit
                 </button>
               )}
             </>

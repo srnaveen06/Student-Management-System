@@ -3,6 +3,7 @@ import { useAI } from '../../context/AIContext';
 import aiApi from '../../services/aiApi';
 import { useToast } from '../../context/ToastContext';
 import { formatDateTime } from '../../utils/format';
+import { Trash2, Send } from 'lucide-react';
 
 // Full-page CampusAI assistant with conversation history management.
 const AIAssistant = () => {
@@ -81,7 +82,7 @@ const AIAssistant = () => {
                       </div>
                       <div className="text-muted" style={{ fontSize: '12px' }}>{formatDateTime(c.updated_at)}</div>
                     </div>
-                    <button className="action-btn delete" title="Delete" onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}>🗑</button>
+                    <button className="action-btn delete" title="Delete" onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}><Trash2 size={14} /></button>
                   </div>
                 ))}
               </div>
@@ -120,7 +121,7 @@ const AIAssistant = () => {
                 placeholder="Type your question…"
                 disabled={chatLoading}
               />
-              <button className="ai-send-btn" onClick={handleSend} disabled={chatLoading || !input.trim()}>➤</button>
+              <button className="ai-send-btn" onClick={handleSend} disabled={chatLoading || !input.trim()}><Send size={16} /></button>
             </div>
           </div>
         </div>

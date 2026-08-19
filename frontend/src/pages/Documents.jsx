@@ -9,16 +9,17 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate } from '../utils/format';
 import { isAdmin } from '../utils/auth';
+import { FolderOpen, Upload, Download, Eye, Trash2, FileText, CreditCard, Award } from 'lucide-react';
 
 const DOC_TYPES = ['Aadhaar', 'Marksheet', 'TC', 'Fee Receipt', 'Certificate', 'Other'];
 
 const TYPE_ICON = {
-  Aadhaar: '🪪',
-  Marksheet: '📝',
-  TC: '📄',
-  'Fee Receipt': '🧾',
-  Certificate: '🏅',
-  Other: '📁'
+  Aadhaar: <CreditCard size={16} />,
+  Marksheet: <FileText size={16} />,
+  TC: <FileText size={16} />,
+  'Fee Receipt': <FileText size={16} />,
+  Certificate: <Award size={16} />,
+  Other: <FolderOpen size={16} />
 };
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -111,11 +112,11 @@ const Documents = () => {
   return (
     <div>
       <PageHeader
-        title="📂 Student Documents"
+        title={<><FolderOpen size={28} /> Student Documents</>}
         subtitle="Central store for student records and certificates"
         actions={canManage && (
           <button className="btn btn-primary" onClick={() => setUploadModal({ open: true, form: emptyForm() })}>
-            📤 Upload Document
+            <Upload size={16} /> Upload Document
           </button>
         )}
       />
@@ -125,7 +126,7 @@ const Documents = () => {
           const item = summary.byType.find(b => b.doc_type === t);
           return (
             <div className="document-card" key={t} onClick={() => setDocType(t)} style={{ cursor: 'pointer', borderColor: docType === t ? 'var(--primary)' : undefined }}>
-              <div className="document-icon">{TYPE_ICON[t] || '📁'}</div>
+              <div className="document-icon">{TYPE_ICON[t] || <FolderOpen size={16} />}</div>
               <div className="document-info">
                 <h4>{t}</h4>
                 <p>{item ? item.count : 0} document(s)</p>
@@ -157,7 +158,7 @@ const Documents = () => {
       {loading ? (
         <InlineLoader />
       ) : documents.length === 0 ? (
-        <EmptyState icon="📂" title="No documents found" message="Upload documents to keep student records organized" />
+        <EmptyState icon={<FolderOpen />} title="No documents found" message="Upload documents to keep student records organized" />
       ) : (
         <div className="table-responsive">
           <table className="data-table">
@@ -181,7 +182,7 @@ const Documents = () => {
                     <strong>{doc.title || doc.doc_type}</strong>
                   </td>
                   <td>
-                    <span className="badge badge-active">{TYPE_ICON[doc.doc_type] || '📁'} {doc.doc_type}</span>
+                    <span className="badge badge-active">{TYPE_ICON[doc.doc_type] || <FolderOpen size={16} />} {doc.doc_type}</span>
                   </td>
                   <td>
                     <div style={{ fontSize: 'var(--font-size-xs)' }}>{formatDate(doc.created_at)}</div>
@@ -195,9 +196,9 @@ const Documents = () => {
                         href={`${API_URL}/uploads/${doc.file_path}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                      >👁</a>
+                      ><Eye size={16} /></a>
                       {canManage && (
-                        <button className="action-btn delete" title="Delete" onClick={() => handleDelete(doc)}>🗑</button>
+                        <button className="action-btn delete" title="Delete" onClick={() => handleDelete(doc)}><Trash2 size={16} /></button>
                       )}
                     </div>
                   </td>
@@ -220,7 +221,7 @@ const Documents = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setUploadModal({ open: false, form: emptyForm() })}>Cancel</button>
-            <button className="btn btn-primary" onClick={handleUpload}>📤 Upload</button>
+            <button className="btn btn-primary" onClick={handleUpload}><Upload size={16} /> Upload</button>
           </>
         }
       >
@@ -245,7 +246,7 @@ const Documents = () => {
             onChange={(e) => setUploadModal(prev => ({ ...prev, form: { ...prev.form, docType: e.target.value } }))}
           >
             <option value="">Select type...</option>
-            {DOC_TYPES.map(t => <option key={t} value={t}>{TYPE_ICON[t] || '📁'} {t}</option>)}
+            {DOC_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
         <div className="form-group">

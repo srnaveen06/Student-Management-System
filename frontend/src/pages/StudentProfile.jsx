@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
+import { Sparkles, Edit, File, Upload, Eye, Trash2, IndianRupee, Printer, RefreshCw, CreditCard, Building2 } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 import studentApi from '../services/studentApi';
@@ -180,7 +181,7 @@ const StudentProfile = () => {
 
   const tabs = [
     { key: 'overview', label: 'Overview' },
-    { key: 'ai', label: '✨ AI Analysis' },
+    { key: 'ai', label: 'AI Analysis' },
     { key: 'documents', label: `Documents (${student.documents?.length || 0})` },
     { key: 'attendance', label: 'Attendance' },
     { key: 'fees', label: 'Fees' },
@@ -230,7 +231,7 @@ const StudentProfile = () => {
         </div>
         {canManage && (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button className="btn btn-primary btn-sm" onClick={() => navigate(`/students/edit/${student.id}`)}>✏ Edit Student</button>
+            <button className="btn btn-primary btn-sm" onClick={() => navigate(`/students/edit/${student.id}`)}><Edit size={16} /> Edit Student</button>
           </div>
         )}
       </div>
@@ -348,7 +349,7 @@ const StudentProfile = () => {
                   {student.documents?.length ? (
                     student.documents.slice(0, 5).map(doc => (
                       <div key={doc.id} className="recent-student">
-                        <div className="recent-student-avatar">📄</div>
+                        <div className="recent-student-avatar"><File size={28} /></div>
                         <div className="recent-student-info">
                           <h4>{doc.title || doc.doc_type}</h4>
                           <p>{doc.doc_type} · {formatDate(doc.created_at)}</p>
@@ -528,7 +529,7 @@ const StudentProfile = () => {
               <h2>Student Documents</h2>
               {canManage && (
                 <button className="btn btn-primary btn-sm" onClick={() => setDocModal(prev => ({ ...prev, open: true }))}>
-                  📤 Upload Document
+                  <Upload size={16} /> Upload Document
                 </button>
               )}
             </div>
@@ -552,9 +553,9 @@ const StudentProfile = () => {
                           <td>{formatDate(doc.created_at)}</td>
                           <td>
                             <div className="action-buttons">
-                              <a className="action-btn view" title="View Document" href={`${API_URL}/uploads/${doc.file_path}`} target="_blank" rel="noopener noreferrer">👁</a>
+                              <a className="action-btn view" title="View Document" href={`${API_URL}/uploads/${doc.file_path}`} target="_blank" rel="noopener noreferrer"><Eye size={16} /></a>
                               {canManage && (
-                                <button className="action-btn delete" title="Delete" onClick={() => handleDeleteDoc(doc)}>🗑</button>
+                                <button className="action-btn delete" title="Delete" onClick={() => handleDeleteDoc(doc)}><Trash2 size={16} /></button>
                               )}
                             </div>
                           </td>
@@ -677,7 +678,7 @@ const StudentProfile = () => {
                               <td>
                                 {canManage && Number(f.remaining) > 0 && (
                                   <button className="btn btn-sm btn-success" onClick={() => setPayModal({ open: true, fee: f, amount: '', paymentDate: new Date().toISOString().split('T')[0], method: 'Cash', reference: '' })}>
-                                    💰 Record Payment
+                                    <IndianRupee size={16} /> Record Payment
                                   </button>
                                 )}
                               </td>
@@ -741,7 +742,7 @@ const StudentProfile = () => {
                       }
                     }}
                   >
-                    🖨 View Marksheet
+                    <Printer size={16} /> View Marksheet
                   </button>
                 </div>
               </div>
@@ -844,7 +845,7 @@ const StudentProfile = () => {
               <h2>Student ID Card</h2>
               {canManage && (
                 <button className="btn btn-primary btn-sm" onClick={issueIdCard}>
-                  {idCard.exists ? '🔄 Regenerate Card' : '🆔 Issue ID Card'}
+                  {idCard.exists ? <><RefreshCw size={16} /> Regenerate Card</> : <><CreditCard size={16} /> Issue ID Card</>}
                 </button>
               )}
             </div>
@@ -856,7 +857,7 @@ const StudentProfile = () => {
                   <div className="idcard-preview">
                     <div className="idcard-header">
                       <div>
-                        <h2>🏛️ Student ID</h2>
+                        <h2><Building2 size={18} /> Student ID</h2>
                         <p>Verified College Identity Card</p>
                       </div>
                       <div style={{ textAlign: 'right' }}>
@@ -908,7 +909,7 @@ const StudentProfile = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setDocModal({ open: false, docType: '', title: '', file: null })}>Cancel</button>
-            <button className="btn btn-primary" onClick={handleDocUpload}>📤 Upload</button>
+            <button className="btn btn-primary" onClick={handleDocUpload}><Upload size={16} /> Upload</button>
           </>
         }
       >
@@ -953,7 +954,7 @@ const StudentProfile = () => {
         footer={
           <>
             <button className="btn btn-outline" onClick={() => setPayModal({ open: false, fee: null })}>Cancel</button>
-            <button className="btn btn-success" onClick={handleRecordPayment}>💰 Save Payment</button>
+            <button className="btn btn-success" onClick={handleRecordPayment}><IndianRupee size={16} /> Save Payment</button>
           </>
         }
       >

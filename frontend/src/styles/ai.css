@@ -14,9 +14,10 @@
 .ai-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   padding: var(--space-md);
+  transition: var(--transition-base);
 }
 
 .ai-card-header {
