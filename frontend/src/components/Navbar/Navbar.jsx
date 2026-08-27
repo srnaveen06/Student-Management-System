@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { getCurrentUser } from '../../utils/auth';
+import { useProfile } from '../../context/ProfileContext';
+import { useCurrentUser, getAssetUrl } from '../../utils/auth';
 import notificationApi from '../../services/notificationApi';
 import { Search, Bell, Sun, Moon, Menu, LogOut } from 'lucide-react';
 
 const Navbar = ({ onMenuToggle }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const admin = getCurrentUser();
+  const { openProfile } = useProfile();
+  const admin = useCurrentUser();
   const [unread, setUnread] = useState(0);
 
   useEffect(() => {
@@ -67,13 +69,18 @@ const Navbar = ({ onMenuToggle }) => {
           )}
         </Link>
 
-        <div className="navbar-user-section">
-          <div className="navbar-user-avatar">{userInitials}</div>
+        <button type="button" className="navbar-user-section" onClick={openProfile} title="Edit profile">
+          <div className="navbar-user-avatar">
+            {admin?.image ? (
+              <img src={getAssetUrl(admin.image)} alt={admin?.name || 'Profile'} />
+            ) : null}
+            <span style={{ display: admin?.image ? 'none' : 'flex' }}>{userInitials}</span>
+          </div>
           <div className="navbar-user-info">
             <span className="navbar-user-name">{admin?.name || admin?.username || 'Admin'}</span>
             <span className="navbar-user-role">{userRole}</span>
           </div>
-        </div>
+        </button>
 
         <button className="navbar-logout" onClick={handleLogout} title="Logout">
           <LogOut size={16} />

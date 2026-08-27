@@ -171,9 +171,18 @@
   gap: var(--space-sm);
   padding: 4px 8px 4px 4px;
   border-radius: var(--radius-lg);
-  cursor: default;
+  cursor: pointer;
   transition: var(--transition);
   margin-left: 4px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.navbar-user-section:hover {
+  background: var(--bg-tertiary);
 }
 
 .navbar-user-avatar {
@@ -187,6 +196,14 @@
   font-size: 13px;
   font-weight: 700;
   color: white;
+  flex-shrink: 0;
+}
+
+.navbar-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
   flex-shrink: 0;
 }
 

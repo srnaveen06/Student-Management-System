@@ -269,6 +269,14 @@
   width: 80px;
   height: 80px;
   font-size: var(--font-size-3xl);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
 }
 
 .profile-avatar img {
@@ -276,6 +284,47 @@
   height: 100%;
   border-radius: var(--radius-full);
   object-fit: cover;
+  flex-shrink: 0;
+}
+
+.profile-avatar-upload-btn {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: #fff;
+  border: 2px solid var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: var(--shadow-sm, none);
+  transition: background 0.15s ease;
+}
+
+.profile-avatar-upload-btn:hover {
+  background: var(--primary-dark, var(--primary));
+}
+
+.profile-avatar-upload-remove {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--danger, #dc3545);
+  color: #fff;
+  border: 2px solid var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
 }
 
 .profile-info {

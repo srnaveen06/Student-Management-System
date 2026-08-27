@@ -24,7 +24,7 @@ const AIQuestions = () => {
   const loadSubjects = async () => {
     try {
       const res = await courseApi.getSubjects({ limit: 200 });
-      setSubjects(res.data?.data || res.data || []);
+      setSubjects(res.subjects || []);
     } catch (error) {
       // optional
     }

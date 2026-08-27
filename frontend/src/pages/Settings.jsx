@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Palette, Sun, Moon, Lock, Clock, LogOut, Building2, Save, Users, Plus, Trash2 } from 'lucide-react';
+import { User, Palette, Sun, Moon, Lock, Clock, LogOut, Building2, Save, Users, Plus, Trash2, Pencil } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
+import { useProfile } from '../context/ProfileContext';
 import Modal from '../components/Modal/Modal';
 import authApi from '../services/authApi';
 import settingsApi from '../services/settingsApi';
-import { getCurrentUser } from '../utils/auth';
+import { useCurrentUser, getAssetUrl } from '../utils/auth';
 import { formatDateTime } from '../utils/format';
 
 const ROLE_LABELS = { super_admin: 'Super Admin', admin: 'Admin', teacher: 'Teacher', accountant: 'Accountant' };
@@ -15,7 +16,8 @@ const Settings = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
-  const admin = getCurrentUser();
+  const { openProfile } = useProfile();
+  const admin = useCurrentUser();
   const isSuperAdmin = (admin?.role || admin?.adminRole || 'admin') === 'super_admin';
   const canEditSettings = isSuperAdmin || (admin?.role || 'admin') === 'admin';
 
@@ -147,11 +149,21 @@ const Settings = () => {
       <div className="settings-grid">
         {/* Profile */}
         <div className="dashboard-section">
-          <div className="dashboard-section-header"><h2><User size={18} /> Profile</h2></div>
+          <div className="dashboard-section-header">
+            <h2><User size={18} /> Profile</h2>
+            <button className="btn btn-outline btn-sm" onClick={openProfile}>
+              <Pencil size={14} /> Edit Profile
+            </button>
+          </div>
           <div className="dashboard-section-body">
             <div className="profile-card">
               <div className="profile-avatar">
-                {(admin?.name || admin?.username || 'A').charAt(0).toUpperCase()}
+                {admin?.image ? (
+                  <img src={getAssetUrl(admin.image)} alt={admin?.name || 'Profile'} />
+                ) : null}
+                <span style={{ display: admin?.image ? 'none' : 'flex' }}>
+                  {(admin?.name || admin?.username || 'A').charAt(0).toUpperCase()}
+                </span>
               </div>
               <div className="profile-info">
                 <h3>{admin?.name || admin?.username || 'Admin'}</h3>

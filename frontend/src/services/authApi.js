@@ -8,6 +8,18 @@ const authApi = {
     return response.data;
   },
 
+  // POST /api/auth/register — Public account creation
+  async register(userData) {
+    const response = await apiClient.post('/auth/register', userData);
+    return response.data;
+  },
+
+  // GET /api/auth/check-availability — Check username/email availability
+  async checkAvailability(params = {}) {
+    const response = await apiClient.get('/auth/check-availability', { params });
+    return response.data;
+  },
+
   // GET /api/auth/verify — Verify token is valid
   async verify(token) {
     const response = await apiClient.get('/auth/verify', {
@@ -19,6 +31,20 @@ const authApi = {
   // PUT /api/auth/password — Change admin password
   async changePassword(currentPassword, newPassword) {
     const response = await apiClient.put('/auth/password', { currentPassword, newPassword });
+    return response.data;
+  },
+
+  // PUT /api/auth/profile — Update own profile (name / username / email)
+  async updateProfile(data) {
+    const response = await apiClient.put('/auth/profile', data);
+    return response.data;
+  },
+
+  // POST /api/auth/profile/image — Upload profile picture (multipart)
+  async uploadProfileImage(formData) {
+    const response = await apiClient.post('/auth/profile/image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   },
 

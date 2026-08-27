@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield, GraduationCap } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield, GraduationCap, CheckCircle2 } from 'lucide-react';
 import authApi from '../services/authApi';
 import { useToast } from '../context/ToastContext';
 import { useAI } from '../context/AIContext';
@@ -8,10 +8,18 @@ import '../styles/login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { refreshFeatures } = useAI();
 
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  const registeredMessage = location.state?.registered
+    ? 'Account created successfully! Please sign in.'
+    : '';
+
+  const [formData, setFormData] = useState({
+    username: location.state?.username || '',
+    password: ''
+  });
   const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('remember_me') === 'true');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -96,6 +104,14 @@ const Login = () => {
           <h2>Welcome back</h2>
           <p>Sign in to your account to continue</p>
         </div>
+
+        {/* Success (after account creation) */}
+        {registeredMessage && (
+          <div className="login-success" role="status">
+            <CheckCircle2 size={16} />
+            <span>{registeredMessage}</span>
+          </div>
+        )}
 
         {/* Error */}
         {error && (
@@ -192,6 +208,12 @@ const Login = () => {
             )}
           </button>
         </form>
+
+        {/* Create account link */}
+        <div className="login-create-row">
+          <span>New to StudentOS?</span>
+          <Link to="/signup" className="login-create-link">Create an account</Link>
+        </div>
 
         {/* Footer tagline */}
         <div className="login-footer">

@@ -1,21 +1,19 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { hasRole, getCurrentUser } from '../../utils/auth';
+import { hasRole, useCurrentUser, getAssetUrl } from '../../utils/auth';
+import { useProfile } from '../../context/ProfileContext';
 import {
   LayoutDashboard, Users, UserPlus, Download, CalendarCheck,
   Coins, BookOpen, FileText, CalendarDays, Megaphone,
   ClipboardList, FolderOpen, CreditCard, BarChart3,
   Bell, ScrollText, Settings, Bot, Search, Lightbulb,
   FileBarChart, HelpCircle, GraduationCap, Brain,
-<<<<<<< HEAD
-  FileStack, FlaskConical, LogOut
-=======
-  FileStack, Scroll, FlaskConical
->>>>>>> b763a579713ceb90b318ad65686ff6a60989c494
+  FileStack, FlaskConical
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const admin = getCurrentUser();
+  const admin = useCurrentUser();
+  const { openProfile } = useProfile();
 
   const navItems = [
     { label: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
@@ -120,13 +118,18 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         <div className="sidebar-footer">
-          <div className="sidebar-user">
-            <div className="sidebar-user-avatar">{userInitials}</div>
+          <button type="button" className="sidebar-user" onClick={openProfile} title="Edit profile">
+            <div className="sidebar-user-avatar">
+              {admin?.image ? (
+                <img src={getAssetUrl(admin.image)} alt={admin?.name || 'Profile'} />
+              ) : null}
+              <span style={{ display: admin?.image ? 'none' : 'flex' }}>{userInitials}</span>
+            </div>
             <div className="sidebar-user-info">
               <div className="sidebar-user-name">{admin?.name || admin?.username || 'Admin'}</div>
               <div className="sidebar-user-role">{userRole}</div>
             </div>
-          </div>
+          </button>
         </div>
       </aside>
     </>

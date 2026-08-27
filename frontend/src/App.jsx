@@ -21,6 +21,7 @@ import './styles/erp.css';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import { AIProvider } from './context/AIContext';
+import { ProfileProvider } from './context/ProfileContext';
 
 // Components
 import Sidebar from './components/Sidebar/Sidebar';
@@ -30,6 +31,7 @@ import FloatingChat from './components/CampusAI/FloatingChat';
 
 // Pages
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Students from './pages/Students';
 import AddStudent from './pages/AddStudent';
@@ -71,7 +73,7 @@ const AppLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
-  const noLayoutRoutes = ['/login'];
+  const noLayoutRoutes = ['/login', '/signup'];
   const isNoLayout = noLayoutRoutes.includes(location.pathname);
 
   if (isNoLayout) return null;
@@ -193,13 +195,16 @@ function App() {
     <ThemeProvider>
       <ToastProvider>
         <AIProvider>
-          <Router>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/verify/:token" element={<VerifyIdCard />} />
-              <Route path="/*" element={<AppLayout />} />
-            </Routes>
-          </Router>
+          <ProfileProvider>
+            <Router>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/verify/:token" element={<VerifyIdCard />} />
+                <Route path="/*" element={<AppLayout />} />
+              </Routes>
+            </Router>
+          </ProfileProvider>
         </AIProvider>
       </ToastProvider>
     </ThemeProvider>

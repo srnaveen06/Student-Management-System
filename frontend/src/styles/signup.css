@@ -1,0 +1,43 @@
+/* ============================================
+   Sign Up Page — StudentOS
+   Reuses the login page design tokens and layout
+   ============================================ */
+
+/* Per-field error message */
+.login-field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #DC2626;
+  animation: loginErrorIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-theme="dark"] .login-field-error {
+  color: #FCA5A5;
+}
+
+.login-field-error svg {
+  flex-shrink: 0;
+}
+
+/* Invalid input state */
+.login-input-wrap input.error {
+  border-color: #DC2626;
+}
+
+.login-input-wrap input.error:focus {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+[data-theme="dark"] .login-input-wrap input.error {
+  border-color: #FCA5A5;
+}
+
+/* Signup card allows a bit more vertical room for the extra fields */
+.signup-card {
+  max-width: 440px;
+}

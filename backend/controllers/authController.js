@@ -67,12 +67,196 @@ const AuthController = {
     }
   },
 
+  // POST /api/auth/register — Public self-registration (protected-free account creation)
+  async register(req, res) {
+    try {
+      const { name, username, email, password } = req.body;
+
+      const newName = name !== undefined && name !== null ? String(name).trim() : '';
+      const newUsername = username !== undefined && username !== null ? String(username).trim() : '';
+      const newEmail = email !== undefined && email !== null ? String(email).trim() : '';
+
+      if (!newName || newName.length < 2) {
+        return res.status(400).json({ success: false, message: 'Please enter your full name' });
+      }
+      if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(newUsername)) {
+        return res.status(400).json({ success: false, message: 'Username must be 3-50 characters using letters, numbers, "_", "." or "-"' });
+      }
+      if (!newEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+        return res.status(400).json({ success: false, message: 'Please enter a valid email address' });
+      }
+      if (!password) {
+        return res.status(400).json({ success: false, message: 'Password is required' });
+      }
+      if (password.length < 6) {
+        return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
+      }
+
+      const [du] = await db.execute('SELECT id FROM admins WHERE LOWER(username) = LOWER(?)', [newUsername]);
+      if (du.length > 0) {
+        return res.status(400).json({ success: false, message: 'Username is already in use' });
+      }
+
+      const [de] = await db.execute('SELECT id FROM admins WHERE LOWER(email) = LOWER(?)', [newEmail]);
+      if (de.length > 0) {
+        return res.status(400).json({ success: false, message: 'Email is already registered' });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const role = 'admin';
+      const [result] = await db.execute(
+        'INSERT INTO admins (username, password, role, name, email) VALUES (?, ?, ?, ?, ?)',
+        [newUsername, hashedPassword, role, newName, newEmail]
+      );
+
+      logActivity({
+        userId: result.insertId,
+        username: newUsername,
+        action: 'account_created',
+        description: `${newUsername} created a StudentOS account`,
+        relatedType: 'admin',
+        relatedId: result.insertId
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'Account created successfully',
+        data: { id: result.insertId, username: newUsername, name: newName, email: newEmail, role }
+      });
+    } catch (error) {
+      console.error('Register error:', error);
+      res.status(500).json({ success: false, message: 'Server error during registration' });
+    }
+  },
+
+  // GET /api/auth/check-availability — Check username/email availability (public)
+  async checkAvailability(req, res) {
+    try {
+      const { username, email } = req.query;
+      const data = { usernameAvailable: true, emailAvailable: true };
+
+      if (username) {
+        const [u] = await db.execute('SELECT id FROM admins WHERE LOWER(username) = LOWER(?)', [String(username).trim()]);
+        data.usernameAvailable = u.length === 0;
+      }
+      if (email) {
+        const [e] = await db.execute('SELECT id FROM admins WHERE LOWER(email) = LOWER(?)', [String(email).trim()]);
+        data.emailAvailable = e.length === 0;
+      }
+
+      res.json({ success: true, data });
+    } catch (error) {
+      console.error('Check availability error:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
+    }
+  },
+
   // GET /api/auth/verify — Verify JWT token
   async verify(req, res) {
     try {
       res.json({ success: true, data: { user: req.user } });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Server error during verification' });
+    }
+  },
+
+  // PUT /api/auth/profile — Update own profile (name / username / email)
+  async updateProfile(req, res) {
+    try {
+      const { name, username, email } = req.body;
+
+      const [rows] = await db.execute('SELECT * FROM admins WHERE id = ?', [req.user.id]);
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      const admin = rows[0];
+
+      if (username !== undefined) {
+        const newUsername = String(username).trim();
+        if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(newUsername)) {
+          return res.status(400).json({ success: false, message: 'Username must be 3-50 characters using letters, numbers, "_", "." or "-"' });
+        }
+        if (newUsername.toLowerCase() !== admin.username.toLowerCase()) {
+          const [dup] = await db.execute(
+            'SELECT id FROM admins WHERE LOWER(username) = LOWER(?) AND id <> ?',
+            [newUsername, admin.id]
+          );
+          if (dup.length > 0) {
+            return res.status(400).json({ success: false, message: 'Username is already in use' });
+          }
+        }
+      }
+
+      if (email !== undefined) {
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+          return res.status(400).json({ success: false, message: 'A valid email is required' });
+        }
+        const [dup] = await db.execute(
+          'SELECT id FROM admins WHERE email = ? AND id <> ?',
+          [String(email).trim(), admin.id]
+        );
+        if (dup.length > 0) {
+          return res.status(400).json({ success: false, message: 'Email is already in use' });
+        }
+      }
+
+      const newUsername = username !== undefined && username !== null ? String(username).trim() : admin.username;
+      const newName = name !== undefined && name !== null ? String(name).trim() : admin.name;
+      const newEmail = email !== undefined ? String(email).trim() : admin.email;
+
+      await db.execute('UPDATE admins SET username = ?, name = ?, email = ? WHERE id = ?', [
+        newUsername, newName || null, newEmail || null, admin.id
+      ]);
+
+      logActivity({
+        userId: admin.id,
+        username: newUsername,
+        action: 'profile_updated',
+        description: `${newUsername} updated their profile`
+      });
+
+      const [updated] = await db.execute('SELECT * FROM admins WHERE id = ?', [admin.id]);
+
+      res.json({
+        success: true,
+        message: 'Profile updated successfully',
+        data: {
+          admin: sanitizeAdmin(updated[0]),
+          token: signToken(updated[0])
+        }
+      });
+    } catch (error) {
+      console.error('Update profile error:', error);
+      res.status(500).json({ success: false, message: 'Server error while updating profile' });
+    }
+  },
+
+  // PUT /api/auth/profile/image — Upload own profile picture
+  async uploadProfileImage(req, res) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Please select an image file' });
+      }
+
+      await db.execute('UPDATE admins SET image = ? WHERE id = ?', [req.file.filename, req.user.id]);
+
+      logActivity({
+        userId: req.user.id,
+        username: req.user.username,
+        action: 'profile_updated',
+        description: `${req.user.username} updated their profile picture`
+      });
+
+      const [updated] = await db.execute('SELECT * FROM admins WHERE id = ?', [req.user.id]);
+
+      res.json({
+        success: true,
+        message: 'Profile picture updated',
+        data: { admin: sanitizeAdmin(updated[0]) }
+      });
+    } catch (error) {
+      console.error('Upload profile image error:', error);
+      res.status(500).json({ success: false, message: 'Server error while uploading image' });
     }
   },
 
