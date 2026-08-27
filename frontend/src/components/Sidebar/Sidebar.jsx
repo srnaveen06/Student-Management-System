@@ -7,7 +7,7 @@ import {
   ClipboardList, FolderOpen, CreditCard, BarChart3,
   Bell, ScrollText, Settings, Bot, Search, Lightbulb,
   FileBarChart, HelpCircle, GraduationCap, Brain,
-  FileStack, Scroll, FlaskConical, LogOut
+  FileStack, FlaskConical, LogOut
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -45,7 +45,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     { label: 'TeacherAI', path: '/ai/teacher', icon: GraduationCap, roles: ['super_admin', 'admin', 'teacher'] },
     { label: 'AI Intelligence', path: '/ai/intelligence', icon: Brain, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
     { label: 'AI Documents', path: '/ai/documents', icon: FileStack, roles: ['super_admin', 'admin'] },
-    { label: 'AI Activity', path: '/ai/activity', icon: Scroll, roles: ['super_admin', 'admin'] },
     { label: 'AI Settings', path: '/ai/settings', icon: FlaskConical, roles: ['super_admin', 'admin'] },
   ];
 

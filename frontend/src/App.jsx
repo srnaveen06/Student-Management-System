@@ -56,7 +56,6 @@ import AIQuestions from './pages/AI/AIQuestions';
 import TeacherAssistant from './pages/AI/TeacherAssistant';
 import AIIntelligence from './pages/AI/AIIntelligence';
 import AIDocuments from './pages/AI/AIDocuments';
-import AIActivity from './pages/AI/AIActivity';
 import AISettings from './pages/AI/AISettings';
 
 // ERP pages
@@ -173,9 +172,6 @@ const AppLayout = () => {
             } />
             <Route path="/ai/documents" element={
               <ProtectedRoute><AIDocuments /></ProtectedRoute>
-            } />
-            <Route path="/ai/activity" element={
-              <ProtectedRoute roles={['super_admin', 'admin']}><AIActivity /></ProtectedRoute>
             } />
             <Route path="/ai/settings" element={
               <ProtectedRoute roles={['super_admin', 'admin']}><AISettings /></ProtectedRoute>

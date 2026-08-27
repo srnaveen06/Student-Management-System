@@ -122,11 +122,7 @@ const aiApi = {
     return response.data;
   },
 
-  // ---- Audit + settings ---------------------------------------------------
-  async activity(limit = 50) {
-    const response = await apiClient.get('/ai/activity', { params: { limit } });
-    return response.data;
-  },
+  // ---- Settings ---------------------------------------------------
   async getSettings() {
     const response = await apiClient.get('/ai/settings');
     return response.data;
