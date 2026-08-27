@@ -9,10 +9,10 @@ import { useToast } from '../context/ToastContext';
 import { getInitials, formatCurrency, formatDate, timeAgo } from '../utils/format';
 import {
   Users, UserCheck, BookOpen, Layers, IndianRupee, Clock,
-  CalendarCheck, Bell, ClipboardList, TrendingUp, TrendingDown,
-  ArrowRight, Plus, Download, CheckCircle, Sparkles, AlertTriangle,
+  CalendarCheck, Bell, ClipboardList, TrendingUp,
+  Plus, Download, CheckCircle, Sparkles, AlertTriangle,
   GraduationCap, CreditCard, FolderOpen, Megaphone, CalendarDays,
-  Activity, BarChart3, Eye, ChevronRight, FileText
+  Activity, BarChart3, ChevronRight, FileText
 } from 'lucide-react';
 
 const BarChart = ({ data, height = 120, color = 'var(--primary)', labelKey = 'label', valueKey = 'count' }) => {

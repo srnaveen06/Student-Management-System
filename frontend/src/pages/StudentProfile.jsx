@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { Sparkles, Edit, File, Upload, Eye, Trash2, IndianRupee, Printer, RefreshCw, CreditCard, Building2 } from 'lucide-react';
+import { Edit, File, Upload, Eye, Trash2, IndianRupee, Printer, RefreshCw, CreditCard, Building2 } from 'lucide-react';
 import { InlineLoader } from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 import studentApi from '../services/studentApi';
@@ -57,7 +57,9 @@ const StudentProfile = () => {
 
   useEffect(() => { fetchProfile(); }, [fetchProfile]);
 
-  const loadAiAnalysis = async () => {
+  const student = profile;
+
+  const loadAiAnalysis = useCallback(async () => {
     setAiLoading(true);
     try {
       const [risk, forecast, recs, marks] = await Promise.allSettled([
@@ -75,11 +77,11 @@ const StudentProfile = () => {
     } finally {
       setAiLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     if (tab === 'ai') loadAiAnalysis();
-  }, [tab]);
+  }, [tab, loadAiAnalysis]);
 
   // Load leave history when the Leave tab opens.
   useEffect(() => {
@@ -124,8 +126,6 @@ const StudentProfile = () => {
 
   if (loading) return <InlineLoader />;
   if (!profile) return <p className="muted-center">Student not found</p>;
-
-  const student = profile;
 
   const handleDocUpload = async () => {
     if (!docModal.file || !docModal.docType) {

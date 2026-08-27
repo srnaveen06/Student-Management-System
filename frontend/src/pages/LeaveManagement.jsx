@@ -26,13 +26,6 @@ const STATUS_CLASS = {
   Cancelled: 'leave-status-cancelled'
 };
 
-const toDateInput = (v) => {
-  if (!v) return '';
-  const d = new Date(v);
-  if (isNaN(d.getTime())) return v;
-  return d.toISOString().split('T')[0];
-};
-
 const emptyForm = () => ({
   studentId: '', leaveType: 'Casual', fromDate: '', toDate: '', reason: '', file: null
 });

@@ -9,7 +9,7 @@ import studentApi from '../services/studentApi';
 import { useToast } from '../context/ToastContext';
 import { formatDate } from '../utils/format';
 import { isAdmin } from '../utils/auth';
-import { FolderOpen, Upload, Download, Eye, Trash2, FileText, CreditCard, Award } from 'lucide-react';
+import { FolderOpen, Upload, Eye, Trash2, FileText, CreditCard, Award } from 'lucide-react';
 
 const DOC_TYPES = ['Aadhaar', 'Marksheet', 'TC', 'Fee Receipt', 'Certificate', 'Other'];
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { InlineLoader } from '../../components/Loader/Loader';
 import aiApi from '../../services/aiApi';
 import studentApi from '../../services/studentApi';
@@ -29,7 +29,7 @@ const AIIntelligence = () => {
   const [prediction, setPrediction] = useState(null);
   const [predictLoading, setPredictLoading] = useState(false);
 
-  const loadFeeRisk = async () => {
+  const loadFeeRisk = useCallback(async () => {
     setFeeLoading(true);
     try {
       const data = await aiApi.feeRisk();
@@ -39,7 +39,7 @@ const AIIntelligence = () => {
     } finally {
       setFeeLoading(false);
     }
-  };
+  }, [toast]);
 
   const loadAnomalies = async () => {
     setAnomLoading(true);
@@ -70,7 +70,7 @@ const AIIntelligence = () => {
   useEffect(() => {
     loadFeeRisk();
     if (admin) { loadModel(); loadStudents(); }
-  }, [admin]);
+  }, [admin, loadFeeRisk]);
 
   const train = async () => {
     setTraining(true);
