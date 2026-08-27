@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield, Sparkles, Brain, GraduationCap } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield, GraduationCap } from 'lucide-react';
 import authApi from '../services/authApi';
 import { useToast } from '../context/ToastContext';
+import { useAI } from '../context/AIContext';
 import '../styles/login.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { refreshFeatures } = useAI();
 
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('remember_me') === 'true');
@@ -54,6 +56,7 @@ const Login = () => {
         }
 
         toast.success('Login successful! Welcome back.');
+        refreshFeatures();
         navigate('/');
       }
     } catch (err) {

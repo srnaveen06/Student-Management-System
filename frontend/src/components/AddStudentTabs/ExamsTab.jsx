@@ -12,6 +12,7 @@ const ExamsTab = ({ value = [], onChange, branch, semester }) => {
   const [enrolled, setEnrolled] = useState(value.filter(e => e.exam_id).map(e => e.exam_id));
   const [extra, setExtra] = useState(value.filter(e => e.is_new));
   // Existing marks per enrolled exam (kept when editing so resaving doesn't wipe them)
+  // eslint-disable-next-line no-unused-vars
   const [marksByExam, setMarksByExam] = useState(() => {
     const map = {};
     value.filter(e => e.exam_id).forEach(e => {

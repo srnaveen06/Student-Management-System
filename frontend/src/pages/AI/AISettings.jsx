@@ -8,7 +8,7 @@ import { Save } from 'lucide-react';
 const AISettings = () => {
   const { toast } = useToast();
   const { refreshFeatures } = useAI();
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 

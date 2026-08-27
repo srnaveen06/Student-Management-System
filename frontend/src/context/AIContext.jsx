@@ -31,6 +31,10 @@ export const AIProvider = ({ children }) => {
 
   const loadFeatures = useCallback(async () => {
     try {
+      if (!localStorage.getItem('token')) {
+        setLoaded(true);
+        return;
+      }
       const data = await aiApi.getFeatures();
       setFeatures(prev => ({ ...prev, ...data }));
     } catch (error) {

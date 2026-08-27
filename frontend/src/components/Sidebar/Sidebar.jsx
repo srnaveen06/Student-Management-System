@@ -7,7 +7,7 @@ import {
   ClipboardList, FolderOpen, CreditCard, BarChart3,
   Bell, ScrollText, Settings, Bot, Search, Lightbulb,
   FileBarChart, HelpCircle, GraduationCap, Brain,
-  FileStack, Scroll, FlaskConical, LogOut
+  FileStack, Scroll, FlaskConical
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
