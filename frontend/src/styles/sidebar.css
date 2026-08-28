@@ -28,16 +28,20 @@
 .sidebar-logo {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: #fff;
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: white;
   flex-shrink: 0;
-  letter-spacing: -0.5px;
+  overflow: hidden;
+}
+
+.sidebar-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
 }
 
 .sidebar-brand {

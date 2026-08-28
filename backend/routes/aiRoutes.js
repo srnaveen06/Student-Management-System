@@ -35,8 +35,6 @@ router.get('/student/:id/marks-analysis', c.marksAnalysis);
 router.get('/class-analysis', c.classAnalysis);
 
 // Generators
-router.post('/question-generator', c.questionGenerator);
-router.get('/questions', c.listQuestions);
 router.post('/report', c.generateReport);
 router.get('/reports', c.listReports);
 router.post('/message-generator', c.generateMessages);

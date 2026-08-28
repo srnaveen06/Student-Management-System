@@ -409,35 +409,6 @@
   gap: var(--space-sm);
 }
 
-.ai-question-card { border-left: 4px solid var(--primary); }
-
-.ai-question-text {
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-
-.ai-option-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-
-.ai-option {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
-}
-
-.ai-option.correct { background: var(--success-light); color: var(--success); font-weight: 600; }
-
-.ai-answer {
-  font-size: var(--font-size-sm);
-  background: var(--primary-bg);
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  margin-top: 6px;
-}
-
 /* ---- Message drafts ----------------------------------------------------- */
 .ai-msg-draft {
   border: 1px solid var(--border);

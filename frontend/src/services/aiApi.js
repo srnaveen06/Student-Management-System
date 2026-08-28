@@ -69,14 +69,6 @@ const aiApi = {
     const response = await apiClient.get('/ai/reports', { params: { limit } });
     return response.data;
   },
-  async generateQuestions({ subjectId, examName, count, difficulty, types }) {
-    const response = await apiClient.post('/ai/question-generator', { subjectId, examName, count, difficulty, types });
-    return response.data;
-  },
-  async listQuestions(limit = 50) {
-    const response = await apiClient.get('/ai/questions', { params: { limit } });
-    return response.data;
-  },
   async generateMessages({ type, branch, semester, limit }) {
     const response = await apiClient.post('/ai/message-generator', { type, branch, semester, limit });
     return response.data;

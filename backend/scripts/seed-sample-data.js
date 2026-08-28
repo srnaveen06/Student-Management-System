@@ -188,7 +188,7 @@ async function main() {
   await conn.beginTransaction();
   try {
     const clearOrder = [
-      'ai_document_extractions', 'ai_risk_predictions', 'ai_generated_questions', 'ai_reports',
+      'ai_document_extractions', 'ai_risk_predictions', 'ai_reports',
       'student_documents', 'student_id_cards', 'leave_requests', 'announcements', 'academic_events',
       'notifications', 'activity_logs', 'attendance', 'marks', 'fee_payments', 'fees',
       'student_courses', 'student_subjects', 'examinations', 'subjects', 'courses',

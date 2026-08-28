@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, GraduationCap, Shield } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Shield } from 'lucide-react';
 import authApi from '../services/authApi';
 import { useToast } from '../context/ToastContext';
 import '../styles/login.css';
@@ -151,7 +151,7 @@ const Signup = () => {
         {/* Brand */}
         <div className="login-brand">
           <div className="login-logo">
-            <GraduationCap size={28} strokeWidth={2} />
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="StudentOS logo" />
           </div>
           <h1>StudentOS</h1>
           <p>Intelligent College Management</p>

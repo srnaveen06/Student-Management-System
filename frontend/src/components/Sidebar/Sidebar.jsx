@@ -7,7 +7,7 @@ import {
   Coins, BookOpen, FileText, CalendarDays, Megaphone,
   ClipboardList, FolderOpen, CreditCard, BarChart3,
   Bell, ScrollText, Settings, Bot, Search, Lightbulb,
-  FileBarChart, HelpCircle, GraduationCap, Brain,
+  FileBarChart, GraduationCap, Brain,
   FileStack, FlaskConical
 } from 'lucide-react';
 
@@ -43,7 +43,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     { label: 'AI Search', path: '/ai/search', icon: Search, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
     { label: 'AI Insights', path: '/ai/insights', icon: Lightbulb, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
     { label: 'AI Reports', path: '/ai/reports', icon: FileBarChart, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
-    { label: 'AI Questions', path: '/ai/questions', icon: HelpCircle, roles: ['super_admin', 'admin', 'teacher'] },
     { label: 'TeacherAI', path: '/ai/teacher', icon: GraduationCap, roles: ['super_admin', 'admin', 'teacher'] },
     { label: 'AI Intelligence', path: '/ai/intelligence', icon: Brain, roles: ['super_admin', 'admin', 'teacher', 'accountant'] },
     { label: 'AI Documents', path: '/ai/documents', icon: FileStack, roles: ['super_admin', 'admin'] },
@@ -91,10 +90,12 @@ const Sidebar = ({ isOpen, onClose }) => {
         <button className="sidebar-close" onClick={onClose}>×</button>
 
         <div className="sidebar-header">
-          <div className="sidebar-logo">S</div>
+          <div className="sidebar-logo">
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="StudentOS logo" />
+          </div>
           <div className="sidebar-brand">
-            <div className="sidebar-title">SMS</div>
-            <div className="sidebar-subtitle">College Management</div>
+            <div className="sidebar-title">StudentOS</div>
+            <div className="sidebar-subtitle">Intelligent College Management</div>
           </div>
         </div>
 

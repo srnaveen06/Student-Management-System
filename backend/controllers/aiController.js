@@ -11,7 +11,6 @@ const insightsService = require('../ai/services/insightsService');
 const riskService = require('../ai/services/riskService');
 const forecastService = require('../ai/services/forecastService');
 const recommendationService = require('../ai/services/recommendationService');
-const questionService = require('../ai/services/questionService');
 const reportService = require('../ai/services/reportService');
 const classAnalysisService = require('../ai/services/classAnalysisService');
 const marksAnalysisService = require('../ai/services/marksAnalysisService');
@@ -217,38 +216,6 @@ async function recommendations(req, res, next) {
     await audit(req, { feature: 'study_recommendations', prompt: `student:${id}`, dataSources: [{ tool: 'getRecommendations', rows: 1 }], model: 'local', latencyMs: Date.now() - start });
     if (recs.error) return res.status(404).json({ error: recs.error });
     res.json(recs);
-  } catch (err) { next(err); }
-}
-
-// ------------------------------------------------------ Question generator
-async function questionGenerator(req, res, next) {
-  if (!guard(res, TEACHER_ROLE, req.user)) return;
-  const body = req.body || {};
-  try {
-    const start = Date.now();
-    const result = await questionService.generateQuestions({
-      subjectId: toNum(body.subjectId, null, 1, 1e9),
-      examName: toStr(body.examName, 150, ''),
-      count: toNum(body.count, 5, 1, 20),
-      difficulty: toStr(body.difficulty, 20, ''),
-      types: Array.isArray(body.types) ? body.types : [],
-      userId: req.user.id,
-    });
-    await audit(req, { feature: 'question_generator', prompt: JSON.stringify({ subjectId: body.subjectId, count: body.count }), dataSources: [{ tool: 'generateQuestions', rows: result.count }], model: 'local', latencyMs: Date.now() - start });
-    res.json(result);
-  } catch (err) { next(err); }
-}
-
-async function listQuestions(req, res, next) {
-  if (!guard(res, TEACHER_ROLE, req.user)) return;
-  try {
-    const pool = require('../config/db');
-    const n = Math.min(Math.max(Number(req.query.limit) || 50, 1), 100);
-    const [data] = await pool.query(
-      `SELECT q.id, q.subject_id, su.subject_name, q.exam_name, q.question_type, q.difficulty, q.question, q.marks, q.status, q.created_at
-       FROM ai_generated_questions q LEFT JOIN subjects su ON su.id = q.subject_id
-       WHERE q.user_id = ? ORDER BY q.created_at DESC LIMIT ?`, [req.user.id, n]);
-    res.json({ questions: data });
   } catch (err) { next(err); }
 }
 
@@ -468,7 +435,7 @@ async function updateAiSettings(req, res, next) {
 module.exports = {
   chat, listConversations, getConversation, deleteConversation,
   search, insights, studentRisk, attendanceForecast, recommendations,
-  questionGenerator, listQuestions, generateReport, listReports,
+  generateReport, listReports,
   classAnalysis, marksAnalysis, feeRisk, anomalies, generateMessages,
   documentExtract, listExtractions, applyExtraction,
   mlTrain, mlPredict, mlModelInfo, activity, features, getAiSettings, updateAiSettings,

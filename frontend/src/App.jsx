@@ -54,7 +54,6 @@ import AIAssistant from './pages/AI/AIAssistant';
 import AISearch from './pages/AI/AISearch';
 import AIInsights from './pages/AI/AIInsights';
 import AIReports from './pages/AI/AIReports';
-import AIQuestions from './pages/AI/AIQuestions';
 import TeacherAssistant from './pages/AI/TeacherAssistant';
 import AIIntelligence from './pages/AI/AIIntelligence';
 import AIDocuments from './pages/AI/AIDocuments';
@@ -162,9 +161,6 @@ const AppLayout = () => {
             } />
             <Route path="/ai/reports" element={
               <ProtectedRoute><AIReports /></ProtectedRoute>
-            } />
-            <Route path="/ai/questions" element={
-              <ProtectedRoute><AIQuestions /></ProtectedRoute>
             } />
             <Route path="/ai/teacher" element={
               <ProtectedRoute><TeacherAssistant /></ProtectedRoute>

@@ -115,30 +115,7 @@ CREATE TABLE IF NOT EXISTS ai_model_versions (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 6. AI Generated Questions
--- ------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS ai_generated_questions (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  subject_id INT DEFAULT NULL,
-  exam_name VARCHAR(150) DEFAULT NULL,
-  question_type ENUM('MCQ','Short Answer','Long Answer','Coding','Case Study','True/False') NOT NULL,
-  difficulty ENUM('Easy','Medium','Hard') DEFAULT 'Medium',
-  question TEXT NOT NULL,
-  options JSON DEFAULT NULL,
-  answer TEXT DEFAULT NULL,
-  explanation TEXT DEFAULT NULL,
-  marks DECIMAL(5,2) DEFAULT 1,
-  status ENUM('draft','reviewed','published') DEFAULT 'draft',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT fk_aiq_subject FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL,
-  CONSTRAINT fk_aiq_user FOREIGN KEY (user_id) REFERENCES admins(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-CREATE INDEX idx_aiq_subject ON ai_generated_questions (subject_id, question_type);
-
--- ------------------------------------------------------------
--- 7. AI Document Extractions
+-- 6. AI Document Extractions
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ai_document_extractions (
   id INT AUTO_INCREMENT PRIMARY KEY,
